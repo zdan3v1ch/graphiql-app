@@ -4,15 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: set up eslint">
-      <change afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.cjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: set up prettier and editorconfig">
+      <change afterPath="$PROJECT_DIR$/__mocks__/empty.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/__mocks__/fileMock.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/__mocks__/nextFontMock.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/__mocks__/styleMock.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/__tests__/index.test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jest.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jest.setup.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tsconfig.test.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +86,7 @@
     "git-widget-placeholder": "project-set-up",
     "ignore.virus.scanning.warn.message": "true",
     "ignore_missing_gitignore": "true",
+    "last_opened_file_path": "D:/web/rs-school/REACT2024Q3/github/graphiql-app/__mocks__",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -91,13 +96,19 @@
     "nodejs_package_manager_path": "npm",
     "npm.dev.executor": "Run",
     "npm.lint.executor": "Run",
+    "npm.test.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "D:\\web\\rs-school\\REACT2024Q3\\github\\graphiql-app\\node_modules\\prettier",
     "settings.editor.selected.configurable": "settings.javascript.prettier",
     "ts.external.directory.path": "D:\\web\\rs-school\\REACT2024Q3\\github\\graphiql-app\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="npm.lint">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\web\rs-school\REACT2024Q3\github\graphiql-app\__mocks__" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.test">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -118,8 +129,19 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="test" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.test" />
         <item itemvalue="npm.lint" />
         <item itemvalue="npm.dev" />
       </list>
@@ -142,7 +164,8 @@
       <updated>1724350703739</updated>
       <workItem from="1724350705072" duration="57000" />
       <workItem from="1724350784636" duration="4435000" />
-      <workItem from="1724355397292" duration="2522000" />
+      <workItem from="1724355397292" duration="4900000" />
+      <workItem from="1724360406644" duration="1779000" />
     </task>
     <task id="LOCAL-00001" summary="init: install next.js">
       <option name="closed" value="true" />
@@ -176,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724357488451</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="chore: set up prettier and editorconfig">
+      <option name="closed" value="true" />
+      <created>1724357983726</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1724357983726</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,6 +227,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init: install next.js" />
     <MESSAGE value="chore: set up eslint" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: set up eslint" />
+    <MESSAGE value="chore: set up prettier and editorconfig" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: set up prettier and editorconfig" />
   </component>
 </project>
