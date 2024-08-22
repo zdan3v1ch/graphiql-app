@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# run test running command
+npm run test
+
+# continue with pushing commit if everything passed
+exit 0

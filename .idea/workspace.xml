@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: set up prettier and editorconfig">
-      <change afterPath="$PROJECT_DIR$/__mocks__/empty.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/__mocks__/fileMock.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/__mocks__/nextFontMock.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/__mocks__/styleMock.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/__tests__/index.test.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jest.config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jest.setup.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.test.json" afterDir="false" />
+    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: set up jest with test example">
+      <change afterPath="$PROJECT_DIR$/.husky/commit-msg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.husky/pre-commit" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.husky/pre-push" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +159,7 @@
       <workItem from="1724350705072" duration="57000" />
       <workItem from="1724350784636" duration="4435000" />
       <workItem from="1724355397292" duration="4900000" />
-      <workItem from="1724360406644" duration="1779000" />
+      <workItem from="1724360406644" duration="2342000" />
     </task>
     <task id="LOCAL-00001" summary="init: install next.js">
       <option name="closed" value="true" />
@@ -207,7 +201,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724357983726</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="chore: set up jest with test example">
+      <option name="closed" value="true" />
+      <created>1724362311601</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1724362311601</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,6 +230,7 @@
     <MESSAGE value="init: install next.js" />
     <MESSAGE value="chore: set up eslint" />
     <MESSAGE value="chore: set up prettier and editorconfig" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: set up prettier and editorconfig" />
+    <MESSAGE value="chore: set up jest with test example" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: set up jest with test example" />
   </component>
 </project>
