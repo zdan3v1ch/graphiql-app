@@ -6,6 +6,7 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'next/core-web-vitals',
+    'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs', 'next.config.mjs'],
   parser: '@typescript-eslint/parser',
@@ -20,4 +21,4 @@ module.exports = {
       version: 'detect',
     },
   },
-}
+};
