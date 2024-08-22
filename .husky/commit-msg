@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # check commit message format
 if ! head -1 "$1" | grep -qE "^(feat|fix|chore|docs|test|style|refactor|Merge|perf|build|ci|revert)(\(.+?\))?: .{1,}$"; then
   echo "Aborting commit. Your commit message is invalid." >&2

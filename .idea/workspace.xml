@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: set up jest with test example">
-      <change afterPath="$PROJECT_DIR$/.husky/commit-msg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.husky/pre-commit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.husky/pre-push" afterDir="false" />
+    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: set up husky">
+      <change beforePath="$PROJECT_DIR$/.husky/commit-msg" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/commit-msg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.husky/pre-commit" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/pre-commit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.husky/pre-push" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/pre-push" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +157,7 @@
       <workItem from="1724350705072" duration="57000" />
       <workItem from="1724350784636" duration="4435000" />
       <workItem from="1724355397292" duration="4900000" />
-      <workItem from="1724360406644" duration="2342000" />
+      <workItem from="1724360406644" duration="2453000" />
     </task>
     <task id="LOCAL-00001" summary="init: install next.js">
       <option name="closed" value="true" />
@@ -209,7 +207,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724362311601</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="chore: set up husky">
+      <option name="closed" value="true" />
+      <created>1724362812343</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1724362812343</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -231,6 +237,7 @@
     <MESSAGE value="chore: set up eslint" />
     <MESSAGE value="chore: set up prettier and editorconfig" />
     <MESSAGE value="chore: set up jest with test example" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: set up jest with test example" />
+    <MESSAGE value="chore: set up husky" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: set up husky" />
   </component>
 </project>
