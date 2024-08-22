@@ -1,0 +1,5 @@
+# run test running command
+npm run test
+
+# continue with pushing commit if everything passed
+exit 0
