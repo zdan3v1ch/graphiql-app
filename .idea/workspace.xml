@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: set up husky">
-      <change beforePath="$PROJECT_DIR$/.husky/commit-msg" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/commit-msg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.husky/pre-commit" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/pre-commit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.husky/pre-push" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/pre-push" afterDir="false" />
+    <list default="true" id="e3ef695b-ce26-4c89-80b3-105d104729f6" name="Changes" comment="chore: update husky scripts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +86,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.dev.executor": "Run",
+    "npm.format.executor": "Run",
     "npm.lint.executor": "Run",
     "npm.test.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "D:\\web\\rs-school\\REACT2024Q3\\github\\graphiql-app\\node_modules\\prettier",
@@ -100,12 +100,22 @@
       <recent name="D:\web\rs-school\REACT2024Q3\github\graphiql-app\__mocks__" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.test">
+  <component name="RunManager" selected="npm.format">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="format" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="format" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -133,6 +143,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.format" />
         <item itemvalue="npm.test" />
         <item itemvalue="npm.lint" />
         <item itemvalue="npm.dev" />
@@ -157,7 +168,7 @@
       <workItem from="1724350705072" duration="57000" />
       <workItem from="1724350784636" duration="4435000" />
       <workItem from="1724355397292" duration="4900000" />
-      <workItem from="1724360406644" duration="2453000" />
+      <workItem from="1724360406644" duration="2841000" />
     </task>
     <task id="LOCAL-00001" summary="init: install next.js">
       <option name="closed" value="true" />
@@ -215,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724362812343</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="chore: update husky scripts">
+      <option name="closed" value="true" />
+      <created>1724362927428</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1724362927428</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,6 +257,7 @@
     <MESSAGE value="chore: set up prettier and editorconfig" />
     <MESSAGE value="chore: set up jest with test example" />
     <MESSAGE value="chore: set up husky" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: set up husky" />
+    <MESSAGE value="chore: update husky scripts" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: update husky scripts" />
   </component>
 </project>
