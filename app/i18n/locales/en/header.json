@@ -1,3 +1,5 @@
 {
-  "switch": "Switch language"
+  "toggle": "Switch language",
+  "ru": "Russian",
+  "en": "English"
 }

@@ -1,43 +1,38 @@
-import { createInstance, FlatNamespace, KeyPrefix } from 'i18next';
+import { createInstance } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
-import { defaultNS, fallbackLng, i18nConfig } from '@/app/i18n/i18n.constants';
-import { FallbackNs } from 'react-i18next';
+import { defaultNS, i18nConfig } from '@/app/i18n/data/i18n.constants';
+import { IInitI18n } from '@/app/i18n/data/i18n.interface';
 
-const initI18next = async (
-  language: string,
-  namespace: string | string[] = defaultNS
-) => {
-  const i18nInstance = createInstance();
-  await i18nInstance
-    .use(initReactI18next)
-    .use(
+export async function initI18n({
+  language,
+  namespaces,
+  i18nInst,
+  resources,
+}: IInitI18n) {
+  const i18nInstance = i18nInst ?? createInstance();
+  i18nInstance.use(initReactI18next);
+  if (!resources) {
+    i18nInstance.use(
       resourcesToBackend(
         (language: string, namespace: string) =>
           import(`./locales/${language}/${namespace}.json`)
       )
-    )
-    .init({
-      lng: language,
-      fallbackLng: fallbackLng,
-      supportedLngs: i18nConfig.locales,
-      defaultNS: defaultNS,
-      fallbackNS: defaultNS,
-      ns: namespace,
-    });
-  return i18nInstance;
-};
-
-export async function useTranslation<
-  Ns extends FlatNamespace,
-  KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
->(language: string, namespace?: Ns, options: { keyPrefix?: KPrefix } = {}) {
-  const i18nextInstance = await initI18next(
-    language,
-    Array.isArray(namespace) ? (namespace as string[]) : (namespace as string)
-  );
+    );
+  }
+  await i18nInstance.init({
+    lng: language,
+    fallbackLng: i18nConfig.locales[0],
+    supportedLngs: i18nConfig.locales,
+    defaultNS: defaultNS,
+    fallbackNS: defaultNS,
+    ns: namespaces,
+    resources,
+    preload: resources ? [] : i18nConfig.locales,
+  });
   return {
-    t: i18nextInstance.getFixedT(language, namespace, options.keyPrefix),
-    i18n: i18nextInstance,
+    i18n: i18nInstance,
+    resources: i18nInstance.services.resourceStore.data,
+    t: i18nInstance.t,
   };
 }
