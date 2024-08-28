@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Container, Button, Typography, Box, Alert } from '@mui/material';
 
-import { signInSchema } from '@/auth/schema';
-import type { SignInData } from '@/auth/schema';
+import { type SignInData, signInSchema } from '@/auth/schema';
 import FormInputText from '@/components/form/FormInputText';
 import FormInputPassword from '@/components/form/FormInputPassword';
 
@@ -15,8 +14,8 @@ interface Props {
   onSubmit: (data: SignInData) => Promise<void>;
 }
 
-const LoginPage: React.FC<Props> = ({ error, onSubmit }) => {
-  const defaultValues = {
+const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
+  const defaultValues: SignInData = {
     email: '',
     password: '',
   };
@@ -86,4 +85,4 @@ const LoginPage: React.FC<Props> = ({ error, onSubmit }) => {
   );
 };
 
-export default LoginPage;
+export default LoginForm;

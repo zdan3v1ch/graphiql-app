@@ -1,9 +1,8 @@
 import { redirect } from 'next/navigation';
 import { AuthError } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
 import { FirebaseError } from '@firebase/util';
 
-import { signIn, auth } from '@/auth';
+import { signIn } from '@/auth';
 import type { SignInData } from '@/auth/schema';
 
 import LoginForm from './components/LoginForm';
@@ -17,19 +16,11 @@ interface Props {
   };
 }
 
-const SignIn: React.FC<Props> = async ({ searchParams }) => {
+const SignIn: React.FC<Props> = ({ searchParams }) => {
   const { callbackUrl, error: errorType } = searchParams;
   const error =
     errorType &&
     (ErrorMessagesByType[errorType] ?? ErrorMessagesByType.default);
-  const session = await auth();
-
-  if (session?.user) {
-    session.user = {
-      name: session.user.name,
-      email: session.user.email,
-    };
-  }
 
   const handleFormSubmit = async ({ email, password }: SignInData) => {
     'use server';
@@ -58,11 +49,7 @@ const SignIn: React.FC<Props> = async ({ searchParams }) => {
     }
   };
 
-  return (
-    <SessionProvider>
-      <LoginForm error={error} onSubmit={handleFormSubmit} />
-    </SessionProvider>
-  );
+  return <LoginForm error={error} onSubmit={handleFormSubmit} />;
 };
 
 export default SignIn;
