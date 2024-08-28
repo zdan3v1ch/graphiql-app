@@ -7,16 +7,21 @@ import { signIn, auth } from '@/auth';
 import type { SignInData } from '@/auth/schema';
 
 import LoginForm from './components/LoginForm';
+import { ErrorMessagesByType } from './constants';
 import { AuthErrorType, FirebaseAuthErrorCode } from './types';
 
 interface Props {
   searchParams: {
     callbackUrl?: string;
+    error?: AuthErrorType;
   };
 }
 
 const SignIn: React.FC<Props> = async ({ searchParams }) => {
-  const { callbackUrl } = searchParams;
+  const { callbackUrl, error: errorType } = searchParams;
+  const error =
+    errorType &&
+    (ErrorMessagesByType[errorType] ?? ErrorMessagesByType.default);
   const session = await auth();
 
   if (session?.user) {
@@ -55,7 +60,7 @@ const SignIn: React.FC<Props> = async ({ searchParams }) => {
 
   return (
     <SessionProvider>
-      <LoginForm onSubmit={handleFormSubmit} />
+      <LoginForm error={error} onSubmit={handleFormSubmit} />
     </SessionProvider>
   );
 };
