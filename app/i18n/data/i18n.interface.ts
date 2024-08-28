@@ -14,5 +14,5 @@ export interface IInitI18n extends II18n {
 }
 
 export interface IProviderI18n extends II18n {
-  children: JSX.Element;
+  children: React.ReactNode;
 }

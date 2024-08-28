@@ -4,10 +4,10 @@ import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import { getExpires } from '@/app/i18n/utils/getExpires';
 import {
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   SelectChangeEvent,
+  FormControlLabel,
 } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback } from 'react';
@@ -33,16 +33,27 @@ export function LanguageToggle() {
 
   return (
     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-      <InputLabel variant="standard">{t('toggle')}: </InputLabel>
-      <Select onChange={handleOnChange} value={currentLanguage} autoWidth>
-        {i18nConfig.locales.map((locale) => {
-          return (
-            <MenuItem key={locale} value={locale}>
-              {languages[locale]}
-            </MenuItem>
-          );
-        })}
-      </Select>
+      <FormControlLabel
+        control={
+          <Select
+            onChange={handleOnChange}
+            value={currentLanguage}
+            autoWidth
+            sx={{ marginLeft: 1 }}
+          >
+            {i18nConfig.locales.map((locale) => {
+              return (
+                <MenuItem key={locale} value={locale}>
+                  {languages[locale]}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        }
+        label={`${t('toggle')}: `}
+        labelPlacement="start"
+        sx={{ cursor: 'default' }}
+      />
     </FormControl>
   );
 }
