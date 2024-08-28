@@ -7,7 +7,8 @@ import type { SignInData } from '@/auth/schema';
 
 import LoginForm from './components/LoginForm';
 import { ErrorMessagesByType } from './constants';
-import { AuthErrorType, FirebaseAuthErrorCode } from './types';
+import { FirebaseAuthErrorCode } from '@/lib/firestore/types';
+import { AuthErrorType } from './types';
 
 interface Props {
   searchParams: {

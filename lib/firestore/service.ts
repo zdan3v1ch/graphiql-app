@@ -29,17 +29,27 @@ const registerWithEmailAndPassword = async (
   email: string,
   password: string
 ) => {
-  const res = await createUserWithEmailAndPassword(auth, email, password);
-  const user = res.user;
+  try {
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    const user = res.user;
 
-  await addDoc(collection(db, 'users'), {
-    uid: user.uid,
-    name,
-    authProvider: 'local',
-    email,
-  });
+    await addDoc(collection(db, 'users'), {
+      uid: user.uid,
+      name,
+      authProvider: 'local',
+      email,
+    });
 
-  return user;
+    return user;
+  } catch (error) {
+    if (isFirebaseError(error)) {
+      const { code, message, customData } = error;
+
+      throw new FirebaseError(code, message, customData);
+    } else {
+      throw error;
+    }
+  }
 };
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {

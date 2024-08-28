@@ -1,11 +1,12 @@
 'use client';
 
+import { HTMLInputTypeAttribute } from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 
 interface Props<T extends FieldValues> extends UseControllerProps<T> {
   label: string;
-  type?: string;
+  type?: HTMLInputTypeAttribute;
   required?: boolean;
   disabled?: boolean;
   size?: 'small' | 'medium';
