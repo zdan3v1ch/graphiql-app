@@ -6,7 +6,7 @@ export const defaultNS = namespaces[0];
 
 export const languages: Record<string, string> = {
   en: 'English',
-  ru: 'Russian',
+  ru: 'Русский',
 };
 const locales = Object.keys(languages);
 

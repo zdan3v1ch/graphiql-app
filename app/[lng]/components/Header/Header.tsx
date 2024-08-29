@@ -1,52 +1,38 @@
-'use client';
-
-import { AppBar, Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import TollIcon from '@mui/icons-material/Toll';
-import React, { useState } from 'react';
+import { AppBar, Stack, Toolbar } from '@mui/material';
 import { LanguageToggle } from '@/app/[lng]/components/LanguageToggle/LanguageToggle';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
-import { useTranslation } from 'react-i18next';
 
-const Header = () => {
-  const theme = useTheme();
-  const isMatches = useMediaQuery(theme.breakpoints.up('sm'));
-  const [auth, setAuth] = useState(true);
-  const { t } = useTranslation(Namespaces.HEADER);
+import { initI18n } from '@/app/i18n/i18n';
 
-  function handleAuth(): void {
-    setAuth(!auth);
-  }
+import Logo from './components/Logo';
+import NavButton from './components/NavButton';
+
+interface Props {
+  language: string;
+}
+
+const Header: React.FC<Props> = async ({ language }) => {
+  const ns = Namespaces.HEADER;
+  const { t } = await initI18n({ language, namespaces: ns });
+
   return (
-    <AppBar color="default" className="" position="static">
-      <Box
-        sx={{ flexDirection: 'row', display: 'flex', height: 50, padding: 0.5 }}
-      >
-        <Box sx={{ flexGrow: 1 }}>
-          <TollIcon color="primary" fontSize="large" />
-        </Box>
-        <Box sx={{ flexGrow: 1 }}>
-          <LanguageToggle></LanguageToggle>
-        </Box>
-        {isMatches && (
-          <Box>
-            {auth && (
-              <Box sx={{ flexGrow: 1 }}>
-                <Button variant="contained" onClick={handleAuth}>
-                  {t('signIn')}
-                </Button>
-                <Button variant="contained">{t('signUp')}</Button>
-              </Box>
-            )}
-            {!auth && (
-              <Box sx={{ flexGrow: 1 }}>
-                <Button variant="contained" onClick={handleAuth}>
-                  {t('signOut')}
-                </Button>
-              </Box>
-            )}
-          </Box>
-        )}
-      </Box>
+    <AppBar color="primary" className="" position="static" sx={{ p: 1 }}>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Logo />
+        <Stack direction="row" spacing={2} alignItems="center">
+          <NavButton
+            label={t('signIn', { ns })}
+            url="/signin"
+            buttonProps={{ variant: 'text', sx: { color: 'white' } }}
+          />
+          <NavButton
+            label={t('signUp', { ns })}
+            url="/register"
+            buttonProps={{ variant: 'contained', color: 'secondary' }}
+          />
+          <LanguageToggle />
+        </Stack>
+      </Toolbar>
     </AppBar>
   );
 };
