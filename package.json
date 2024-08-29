@@ -15,19 +15,27 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "i18next": "^23.14.0",
-    "i18next-resources-to-backend": "^1.2.1",
+    "@auth/firebase-adapter": "^2.4.2",
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@fontsource/roboto": "^5.0.14",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^6.0.0",
     "@mui/material": "^6.0.0",
     "@mui/material-nextjs": "^6.0.0",
+    "i18next": "^23.14.0",
+    "i18next-resources-to-backend": "^1.2.1",
+    "firebase": "^10.13.0",
+    "firebase-admin": "^11.11.1",
     "next": "14.2.6",
+    "next-auth": "^5.0.0-beta.20",
     "next-i18n-router": "^5.5.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-i18next": "^15.0.1"
+    "react-hook-form": "^7.53.0",
+    "react-i18next": "^15.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",

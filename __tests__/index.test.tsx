@@ -5,7 +5,7 @@ describe('Home', () => {
   it.skip('renders content text', () => {
     render(<Home />);
 
-    const heading = screen.getByText('Explore starter templates for Next.js.');
+    const heading = screen.getByText('Main content');
 
     expect(heading).toBeInTheDocument();
   });
