@@ -1,4 +1,7 @@
 import NextAuth from 'next-auth';
+import { i18nRouter } from 'next-i18n-router';
+
+import { i18nConfig } from '@/app/i18n/data/i18n.constants';
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -30,6 +33,8 @@ export default async function middleware(request: NextRequest) {
 
     return NextResponse.redirect(absoluteURL.toString());
   }
+
+  return i18nRouter(request, i18nConfig);
 }
 
 export const config = {
