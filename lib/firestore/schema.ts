@@ -1,4 +1,4 @@
-import z from 'zod';
+import z, { string } from 'zod';
 
 export const registerSchema = z
   .object({
@@ -33,3 +33,12 @@ export const registerSchema = z
   });
 
 export type RegisterData = z.infer<typeof registerSchema>;
+
+export const userDataSchema = z.object({
+  uid: string().min(1),
+  email: string().min(1),
+  name: string().min(1),
+  authProvider: string().optional(),
+});
+
+export type UserData = z.infer<typeof userDataSchema>;

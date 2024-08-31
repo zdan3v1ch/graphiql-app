@@ -8,6 +8,8 @@ import { Params } from '@/app/i18n/data/i18n.interface';
 import './global.css';
 import { initI18n } from '@/app/i18n/i18n';
 import I18nProvider from '@/app/i18n/i18nProvider';
+import { theme } from '@/app/theme/theme';
+import { ThemeProvider } from '@mui/material/styles';
 
 export const metadata: Metadata = {
   title: 'Final task app',
@@ -29,19 +31,21 @@ export default async function RootLayout({
   const { resources } = await initI18n({ language, namespaces });
   return (
     <html lang={language} dir={dir(language)}>
-      <AppRouterCacheProvider>
-        <body>
-          <I18nProvider
-            namespaces={namespaces}
-            language={language}
-            resources={resources}
-          >
-            <Header />
-            {children}
-            <Footer />
-          </I18nProvider>
-        </body>
-      </AppRouterCacheProvider>
+      <ThemeProvider theme={theme}>
+        <AppRouterCacheProvider>
+          <body>
+            <I18nProvider
+              namespaces={namespaces}
+              language={language}
+              resources={resources}
+            >
+              <Header language={language} />
+              {children}
+              <Footer />
+            </I18nProvider>
+          </body>
+        </AppRouterCacheProvider>
+      </ThemeProvider>
     </html>
   );
 }

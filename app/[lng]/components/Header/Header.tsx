@@ -1,52 +1,91 @@
-'use client';
+import { AppBar, Box, Chip, IconButton, Stack, Toolbar } from '@mui/material';
+import FaceIcon from '@mui/icons-material/Face';
+import MenuIcon from '@mui/icons-material/Menu';
 
-import { AppBar, Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import TollIcon from '@mui/icons-material/Toll';
-import React, { useState } from 'react';
+import { auth } from '@/auth';
+import { initI18n } from '@/app/i18n/i18n';
 import { LanguageToggle } from '@/app/[lng]/components/LanguageToggle/LanguageToggle';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
-import { useTranslation } from 'react-i18next';
 
-const Header = () => {
-  const theme = useTheme();
-  const isMatches = useMediaQuery(theme.breakpoints.up('sm'));
-  const [auth, setAuth] = useState(true);
-  const { t } = useTranslation(Namespaces.HEADER);
+import NavButton from '../../../../components/NavButton';
+import Logo from './components/Logo';
+import SignOutButton from '@/app/[lng]/components/Header/components/SignOutButton';
+import { protectedNavButtonParams } from '@/app/[lng]/components/Header/constants';
 
-  function handleAuth(): void {
-    setAuth(!auth);
-  }
+interface Props {
+  language: string;
+}
+
+const Header: React.FC<Props> = async ({ language }) => {
+  const session = await auth();
+  const ns = Namespaces.HEADER;
+  const { t } = await initI18n({ language, namespaces: ns });
+
+  const renderUserNavigation = () => {
+    if (!session) {
+      return (
+        <>
+          <NavButton
+            label={t('signIn', { ns })}
+            url="/signin"
+            buttonProps={{
+              variant: 'text',
+              color: 'inherit',
+              sx: { color: 'white' },
+            }}
+          />
+          <NavButton
+            label={t('signUp', { ns })}
+            url="/register"
+            buttonProps={{ variant: 'contained', color: 'secondary' }}
+          />
+        </>
+      );
+    }
+
+    return (
+      <>
+        {protectedNavButtonParams.map((navButton) => (
+          <NavButton
+            key={`${navButton.labelHeaderNsKey}${navButton.url}`}
+            label={t(navButton.labelHeaderNsKey, { ns })}
+            url={navButton.url}
+            buttonProps={{
+              variant: 'text',
+              color: 'inherit',
+              sx: { color: 'white' },
+            }}
+          />
+        ))}
+        <Chip
+          icon={<FaceIcon color="inherit" />}
+          label={session.user?.name ?? 'No name'}
+          sx={{ color: 'white', maxWidth: '10rem' }}
+        />
+        <SignOutButton />
+      </>
+    );
+  };
+
   return (
-    <AppBar color="default" className="" position="static">
-      <Box
-        sx={{ flexDirection: 'row', display: 'flex', height: 50, padding: 0.5 }}
-      >
-        <Box sx={{ flexGrow: 1 }}>
-          <TollIcon color="primary" fontSize="large" />
+    <AppBar color="primary" className="" position="static" sx={{ p: 1 }}>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Logo />
+        <Box>
+          <IconButton sx={{ display: { md: 'none' } }}>
+            <MenuIcon />
+          </IconButton>
         </Box>
-        <Box sx={{ flexGrow: 1 }}>
-          <LanguageToggle></LanguageToggle>
-        </Box>
-        {isMatches && (
-          <Box>
-            {auth && (
-              <Box sx={{ flexGrow: 1 }}>
-                <Button variant="contained" onClick={handleAuth}>
-                  {t('signIn')}
-                </Button>
-                <Button variant="contained">{t('signUp')}</Button>
-              </Box>
-            )}
-            {!auth && (
-              <Box sx={{ flexGrow: 1 }}>
-                <Button variant="contained" onClick={handleAuth}>
-                  {t('signOut')}
-                </Button>
-              </Box>
-            )}
-          </Box>
-        )}
-      </Box>
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          sx={{ display: { xs: 'none', md: 'flex' } }}
+        >
+          {renderUserNavigation()}
+          <LanguageToggle />
+        </Stack>
+      </Toolbar>
     </AppBar>
   );
 };

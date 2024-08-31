@@ -1,8 +1,11 @@
 {
-  "toggle": "Switch language",
-  "ru": "Russian",
-  "en": "English",
+  "navRestfulClient": "Restful Client",
+  "navGraphqlClient": "GraphQL Client",
+  "navHistory": "History",
   "signIn": "Sign In",
   "signUp": "Sign up",
-  "signOut": "Sign Out"
+  "signOut": "Sign Out",
+  "toggle": "Switch language",
+  "en": "English",
+  "ru": "Russian"
 }

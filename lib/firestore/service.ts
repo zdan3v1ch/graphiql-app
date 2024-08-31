@@ -4,8 +4,10 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { FirebaseError } from '@firebase/util';
+
+import { type UserData, userDataSchema } from './schema';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA9XHo2o-dBSGPmVQAGnsNPx67NLFSLuB4',
@@ -32,13 +34,15 @@ const registerWithEmailAndPassword = async (
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-
-    await addDoc(collection(db, 'users'), {
+    const userData: UserData = {
       uid: user.uid,
       name,
       authProvider: 'local',
       email,
-    });
+    };
+
+    const docRef = doc(db, 'users', user.uid);
+    await setDoc(docRef, userData, { merge: true });
 
     return user;
   } catch (error) {
@@ -55,8 +59,24 @@ const registerWithEmailAndPassword = async (
 const logInWithEmailAndPassword = async (email: string, password: string) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
+    const user = res.user;
 
-    return res.user;
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDocSnapshot = await getDoc(userDocRef);
+    let username = 'No name';
+
+    if (userDocSnapshot.exists()) {
+      try {
+        const { name } = await userDataSchema.parseAsync(
+          userDocSnapshot.data()
+        );
+        username = name;
+      } catch (err) {
+        console.error('User data document is incorrect');
+      }
+    }
+
+    return { ...user, name: username };
   } catch (error) {
     if (isFirebaseError(error)) {
       const { code, message, customData } = error;
