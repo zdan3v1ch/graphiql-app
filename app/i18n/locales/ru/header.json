@@ -1,8 +1,10 @@
 {
-  "toggle": "Сменить язык",
-  "ru": "Русский",
-  "en": "Английский",
+  "restfulClient": "Restful-клиент",
+  "graphqlClient": "GraphQL-клиент",
   "signIn": "Войти",
   "signUp": "Зарегистрироваться",
-  "signOut": "Выйти"
+  "signOut": "Выйти",
+  "toggle": "Сменить язык",
+  "ru": "Русский",
+  "en": "Английский"
 }
