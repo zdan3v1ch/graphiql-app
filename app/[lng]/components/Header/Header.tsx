@@ -28,7 +28,11 @@ const Header: React.FC<Props> = async ({ language }) => {
           <NavButton
             label={t('signIn', { ns })}
             url="/signin"
-            buttonProps={{ variant: 'text', sx: { color: 'white' } }}
+            buttonProps={{
+              variant: 'text',
+              color: 'inherit',
+              sx: { color: 'white' },
+            }}
           />
           <NavButton
             label={t('signUp', { ns })}
