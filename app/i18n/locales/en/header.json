@@ -1,6 +1,7 @@
 {
-  "restfulClient": "Restful Client",
-  "graphqlClient": "GraphQL Client",
+  "navRestfulClient": "Restful Client",
+  "navGraphqlClient": "GraphQL Client",
+  "navHistory": "History",
   "signIn": "Sign In",
   "signUp": "Sign up",
   "signOut": "Sign Out",

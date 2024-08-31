@@ -1,10 +1,14 @@
 export const protectedNavButtonParams = [
   {
-    labelHeaderNsKey: 'restfulClient',
+    labelHeaderNsKey: 'navRestfulClient',
     url: '/restful',
   },
   {
-    labelHeaderNsKey: 'graphqlClient',
+    labelHeaderNsKey: 'navGraphqlClient',
     url: '/graphql',
+  },
+  {
+    labelHeaderNsKey: 'navHistory',
+    url: '/history',
   },
 ];
