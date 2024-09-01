@@ -24,7 +24,9 @@ const Footer = () => {
             href="https://github.com/lobovskiy"
           >
             <Avatar src="/Art.jpg" alt="Artem" sx={{ width: 40, height: 40 }} />
-            Artem Lobovskii
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              Artem Lobovskii
+            </Box>
           </Link>
           <Link
             sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
@@ -35,14 +37,18 @@ const Footer = () => {
               alt="Anatoli"
               sx={{ width: 40, height: 40 }}
             />
-            Anatoli Zdanevich
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              Anatoli Zdanevich
+            </Box>
           </Link>
           <Link
             sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
             href="https://github.com/90viktoriya"
           >
             <Avatar src="/Vik.jpg" alt="Vika" sx={{ width: 40, height: 40 }} />
-            Viktoriya Schepalina
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              Viktoriya Schepalina
+            </Box>
           </Link>
         </Box>
         <Box>2024</Box>
