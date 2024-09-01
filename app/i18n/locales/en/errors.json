@@ -1,0 +1,11 @@
+{
+  "signUp": {
+    "default": "Something went wrong.",
+    "auth/email-already-in-use": "The email you have entered is already in use."
+  },
+  "signIn": {
+    "default": "Something went wrong.",
+    "CallbackRouteError": "An error occurred during the authentication process.",
+    "auth/invalid-credential": "You have entered a wrong email or password."
+  }
+}
