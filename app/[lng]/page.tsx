@@ -5,9 +5,5 @@ import { Params } from '@/app/i18n/data/i18n.interface';
 export default async function Main({ params }: { params: Params }) {
   const language = params.lng;
   const { t } = await initI18n({ language, namespaces });
-  return (
-    <main className="flex">
-      <h1>{t('title')}</h1>
-    </main>
-  );
+  return <h1>{t('title')}</h1>;
 }

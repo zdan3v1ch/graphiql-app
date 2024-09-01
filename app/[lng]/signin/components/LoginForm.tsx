@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Container, Button, Typography, Box, Alert } from '@mui/material';
 
 import { type SignInData, signInSchema } from '@/auth/schema';
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
+
 import FormInputText from '@/components/form/FormInputText';
 import FormInputPassword from '@/components/form/FormInputPassword';
+import Link from 'next/link';
 
 interface Props {
   error?: string;
@@ -15,6 +19,7 @@ interface Props {
 }
 
 const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
+  const { t } = useTranslation(Namespaces.AUTH);
   const defaultValues: SignInData = {
     email: '',
     password: '',
@@ -39,11 +44,10 @@ const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
           alignItems: 'center',
           justifyContent: 'center',
           gap: '1rem',
-          height: '100vh',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Sign in to your account
+        <Typography variant="h5" component="h1" textAlign="center" gutterBottom>
+          {t('titleSignIn')}
         </Typography>
         {error && (
           <Alert severity="error" sx={{ width: '100%' }}>
@@ -59,7 +63,7 @@ const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
           <FormInputText
             name="email"
             control={control}
-            label="Email"
+            label={t('formLabelEmail')}
             type="email"
             required
             margin="normal"
@@ -67,7 +71,7 @@ const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
           <FormInputPassword
             name="password"
             control={control}
-            label="Password"
+            label={t('formLabelPassword')}
             required
           />
           <Button
@@ -77,8 +81,12 @@ const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
             fullWidth
             disabled={!isValid || loading}
           >
-            Sign in
+            {t('buttonLabelSignIn')}
           </Button>
+          <Typography marginTop="2rem">
+            {t('signInHintText')}&nbsp;
+            <Link href="/register">{t('signInHintLinkLabel')}</Link>
+          </Typography>
         </form>
       </Box>
     </Container>

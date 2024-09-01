@@ -2,13 +2,16 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Container, Button, Typography, Box, Alert } from '@mui/material';
 
 import { type RegisterData, registerSchema } from '@/lib/firestore/schema';
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
+
 import FormInputText from '@/components/form/FormInputText';
 import FormInputPassword from '@/components/form/FormInputPassword';
-import Link from 'next/link';
 
 interface Props {
   registeredEmail?: string;
@@ -21,6 +24,7 @@ const RegisterForm: React.FC<Props> = ({
   error,
   onSubmit,
 }) => {
+  const { t } = useTranslation(Namespaces.AUTH);
   const defaultValues: RegisterData = {
     email: '',
     username: '',
@@ -47,11 +51,10 @@ const RegisterForm: React.FC<Props> = ({
           alignItems: 'center',
           justifyContent: 'center',
           gap: '1rem',
-          height: '100vh',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Create your account
+        <Typography variant="h5" component="h1" textAlign="center" gutterBottom>
+          {t('titleSignUp')}
         </Typography>
         {registeredEmail && (
           <Alert severity="success" sx={{ width: '100%' }}>
@@ -88,7 +91,7 @@ const RegisterForm: React.FC<Props> = ({
           <FormInputText
             name="email"
             control={control}
-            label="Email"
+            label={t('formLabelEmail')}
             type="email"
             required
             margin="normal"
@@ -96,19 +99,19 @@ const RegisterForm: React.FC<Props> = ({
           <FormInputText
             name="username"
             control={control}
-            label="Username"
+            label={t('formLabelUsername')}
             required
           />
           <FormInputPassword
             name="password"
             control={control}
-            label="Password"
+            label={t('formLabelPassword')}
             required
           />
           <FormInputPassword
             name="confirmPassword"
             control={control}
-            label="Confirm password"
+            label={t('formLabelConfirmPassword')}
             required
           />
           <Button
@@ -118,8 +121,12 @@ const RegisterForm: React.FC<Props> = ({
             fullWidth
             disabled={!isValid || loading}
           >
-            Register
+            {t('buttonLabelSignUp')}
           </Button>
+          <Typography marginTop="2rem">
+            {t('signUpHintText')}&nbsp;
+            <Link href="/signin">{t('signUpHintLinkLabel')}</Link>
+          </Typography>
         </form>
       </Box>
     </Container>
