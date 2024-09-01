@@ -16,6 +16,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
 import './global.css';
+import StoreProvider from '@/app/[lng]/StoreProvider';
 
 export const metadata: Metadata = {
   title: 'Final task app',
@@ -38,26 +39,28 @@ export default async function RootLayout({
   return (
     <SessionDataProvider>
       <html lang={language} dir={dir(language)}>
-        <ThemeProvider theme={theme}>
-          <AppRouterCacheProvider>
-            <body>
-              <I18nProvider
-                namespaces={namespaces}
-                language={language}
-                resources={resources}
-              >
-                <CssBaseline />
-                <Header language={language} />
-                <Container>
-                  <main className="flex" style={{ paddingBlock: '2rem' }}>
-                    {children}
-                  </main>
-                </Container>
-                <Footer />
-              </I18nProvider>
-            </body>
-          </AppRouterCacheProvider>
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider theme={theme}>
+            <AppRouterCacheProvider>
+              <body>
+                <I18nProvider
+                  namespaces={namespaces}
+                  language={language}
+                  resources={resources}
+                >
+                  <CssBaseline />
+                  <Header language={language} />
+                  <Container>
+                    <main className="flex" style={{ paddingBlock: '2rem' }}>
+                      {children}
+                    </main>
+                  </Container>
+                  <Footer />
+                </I18nProvider>
+              </body>
+            </AppRouterCacheProvider>
+          </ThemeProvider>
+        </StoreProvider>
       </html>
     </SessionDataProvider>
   );

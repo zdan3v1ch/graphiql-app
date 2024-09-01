@@ -9,7 +9,7 @@ import authConfig from '@/auth/config';
 
 const { auth } = NextAuth(authConfig);
 
-const protectedRoutes = ['/restful', '/graphql', '/history'];
+const protectedRoutes = ['/restful', '/graphql', '/requestsHistory'];
 const unprotectedRoutes = ['/signin'];
 
 export default async function middleware(request: NextRequest) {

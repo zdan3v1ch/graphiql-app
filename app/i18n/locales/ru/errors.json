@@ -1,0 +1,11 @@
+{
+  "signUp": {
+    "default": "Что-то пошло не так.",
+    "auth/email-already-in-use": "Учетная запись с указанным email уже зарегистрирована."
+  },
+  "signIn": {
+    "default": "Что-то пошло не так.",
+    "CallbackRouteError": "Произошла ошибка во время процесса аутентификации.",
+    "auth/invalid-credential": "Введен неправильный email или пароль."
+  }
+}
