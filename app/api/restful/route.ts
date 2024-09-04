@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import z from 'zod';
 
-import { parseRestfulClientUrl } from './utils';
+import { parseRestfulClientUrl } from '@/app/utils';
 
 export async function POST(request: NextRequest) {
   const clientRequestBody: unknown = await request.json();
