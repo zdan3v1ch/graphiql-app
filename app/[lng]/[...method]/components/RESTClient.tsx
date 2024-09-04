@@ -1,7 +1,8 @@
-import EndpointInput from "@/components/EndpointInput/EndpointInput";
-import Headers from "@/components/Headers/Headers";
-import { SelectMethod } from "@/components/SelectMethod/SelectMethod";
-import { FormControl, Stack } from "@mui/material";
+import BodyInput from '@/components/BodyInput/BodyInput';
+import EndpointInput from '@/components/EndpointInput/EndpointInput';
+import Headers from '@/components/Headers/Headers';
+import { SelectMethod } from '@/components/SelectMethod/SelectMethod';
+import { FormControl, Stack } from '@mui/material';
 
 export function RESTClient() {
   return (
@@ -11,6 +12,7 @@ export function RESTClient() {
         <EndpointInput />
       </Stack>
       <Headers />
+      <BodyInput />
     </FormControl>
-  )
+  );
 }

@@ -3,5 +3,5 @@ export enum Namespaces {
   HEADER = 'header',
   AUTH = 'auth',
   ERRORS = 'errors',
-  CLIENTS = 'clients'
+  CLIENTS = 'clients',
 }
