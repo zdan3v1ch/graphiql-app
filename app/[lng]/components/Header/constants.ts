@@ -10,12 +10,12 @@ export const protectedNavButtonParams = [
   },
   {
     labelHeaderNsKey: 'navGraphqlClient',
-    url: '/graphql',
+    url: '/GRAPHQL',
     muiIcon: WebhookIcon,
   },
   {
     labelHeaderNsKey: 'navHistory',
-    url: '/history',
+    url: '/requests-history',
     muiIcon: HistoryIcon,
   },
 ];
