@@ -43,7 +43,6 @@ export function RESTClient() {
     const localePattern = locales.join('|');
     const regex = new RegExp(`^/(${localePattern})/(.*)`);
 
-    console.log('pathname :>> ', pathname);
     let newUrl = regex.test(pathname)
       ? pathname.slice(0, i18n.language.length + 2)
       : '';
