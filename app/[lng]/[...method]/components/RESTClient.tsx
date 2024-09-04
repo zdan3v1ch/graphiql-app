@@ -43,9 +43,10 @@ export function RESTClient() {
     const localePattern = locales.join('|');
     const regex = new RegExp(`^/(${localePattern})/(.*)`);
 
+    // check if pathname starts with locale
     let newUrl = regex.test(pathname)
-      ? pathname.slice(0, i18n.language.length + 2)
-      : '';
+      ? pathname.slice(0, 1 + i18n.language.length + 1) // if yes then add locale and slashes after and before it to the new url
+      : '/';
     newUrl += method;
 
     if (endpointUrl) {
