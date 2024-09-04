@@ -1,3 +1,5 @@
+'use client';
+
 import { RESTClient } from '@/app/[lng]/[...method]/components/RESTClient';
 
 export default function RestClient() {
