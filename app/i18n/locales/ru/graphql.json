@@ -1,0 +1,17 @@
+{
+  "titleGraphql": "GraphiQL клиент",
+  "addHeaderGraphql": "Добавить заголовки",
+  "responseGraphql": "Ответ",
+  "documentationGraphql": "Документация",
+  "endpointUrlGraphql": "Endpoint  URL",
+  "sdlUrlGraphql": "SDL URL",
+  "headersGraphql": "Заголовки",
+  "addHeadersGraphql": "Добавить заголовки",
+  "headerKeyGraphql": "Ключ заголовка",
+  "headerValueGraphql": "Значение заголовка",
+  "queryGraphql": "Query",
+  "variablesGraphql": "Переменные",
+  "statusGraphql": "Статус",
+  "bodyGraphql": "Тело",
+  "sendRequestGraphql": "Отправить запрос"
+}
