@@ -1,4 +1,16 @@
-interface RestfulRequestData {
+export function removeLocaleFromPath(path: string, locales: string[]): string {
+  const localePattern = locales.join('|');
+  const regex = new RegExp(`^/(${localePattern})/(.*)`);
+  const match = path.match(regex);
+
+  if (match?.[2]) {
+    return match[2];
+  }
+
+  return path;
+}
+
+export interface RestfulRequestData {
   method: string;
   endpointUrl?: string;
   body?: string;
