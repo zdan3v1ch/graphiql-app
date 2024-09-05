@@ -5,7 +5,7 @@ import HistoryIcon from '@mui/icons-material/History';
 export const protectedNavButtonParams = [
   {
     labelHeaderNsKey: 'navRestfulClient',
-    url: '/restful',
+    url: '/GET',
     muiIcon: ApiIcon,
   },
   {

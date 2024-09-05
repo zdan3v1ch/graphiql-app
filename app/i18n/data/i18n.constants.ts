@@ -8,7 +8,7 @@ export const languages: Record<string, string> = {
   en: 'English',
   ru: 'Русский',
 };
-const locales = Object.keys(languages);
+export const locales = Object.keys(languages);
 
 export const i18nConfig: Config = {
   locales,

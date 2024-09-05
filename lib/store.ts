@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import requestsHistorySlice from '@/lib/features/requestsHistory/slice';
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {},
+    reducer: {
+      [requestsHistorySlice.name]: requestsHistorySlice.reducer,
+    },
   });
 };
 
