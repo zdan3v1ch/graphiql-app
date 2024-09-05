@@ -4,15 +4,16 @@ import { usePathname } from 'next/navigation';
 import { HTTP_METHOD } from 'next/dist/server/web/http';
 import { FormControl, Stack } from '@mui/material';
 
+import useGetAllSearchParams from '../hooks/useGetAllSearchParams';
 import HttpMethodSelector from '@/components/HttpMethodSelector/HttpMethodSelector';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
 import HeadersInput from '@/components/HeadersInput/HeadersInput';
 import BodyInput from '@/components/BodyInput/BodyInput';
 
-import { locales } from '@/app/i18n/data/i18n.constants';
 import { parseRestfulClientUrl, removeLocaleFromPath } from '@/app/utils';
 import { validateRequestData } from './utils';
-import useGetAllSearchParams from '../hooks/useGetAllSearchParams';
+import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
+import { locales } from '@/app/i18n/data/i18n.constants';
 
 export function RESTClient() {
   const { i18n } = useTranslation();
@@ -56,6 +57,10 @@ export function RESTClient() {
     }
 
     if (body) {
+      if (!endpointUrl) {
+        newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
+      }
+
       newUrl += `/${window.btoa(body)}`;
     }
 

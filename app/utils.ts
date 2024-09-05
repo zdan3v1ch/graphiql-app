@@ -1,3 +1,5 @@
+import { EMPTY_ENDPOINT_URL_SYMBOL } from './constants';
+
 export function removeLocaleFromPath(path: string, locales: string[]): string {
   const localePattern = locales.join('|');
   const regex = new RegExp(`^/(${localePattern})/(.*)`);
@@ -10,31 +12,37 @@ export function removeLocaleFromPath(path: string, locales: string[]): string {
   return path;
 }
 
-export interface RestfulRequestData {
-  method: string;
+interface ApiRequestData {
   endpointUrl?: string;
   body?: string;
   headers?: Record<string, string>;
 }
 
-export function parseRestfulClientUrl(url: string) {
-  const [mainPart, queryString] = url.split('?');
-  const [method, base64EncodedEndpointUrl, base64EncodedBody] =
-    mainPart.split('/');
+export interface RestfulRequestData extends ApiRequestData {
+  method: string;
+}
 
-  const requestData: RestfulRequestData = {
-    method,
-  };
+export type GraphqlRequestData = ApiRequestData;
 
-  if (base64EncodedEndpointUrl) {
-    requestData.endpointUrl = Buffer.from(
+function getApiRequestData(
+  base64EncodedEndpointUrl?: string,
+  base64EncodedBody?: string,
+  queryString?: string
+) {
+  const apiRequestData: ApiRequestData = {};
+
+  if (
+    base64EncodedEndpointUrl &&
+    base64EncodedEndpointUrl !== EMPTY_ENDPOINT_URL_SYMBOL
+  ) {
+    apiRequestData.endpointUrl = Buffer.from(
       base64EncodedEndpointUrl,
       'base64'
     ).toString('utf-8');
   }
 
   if (base64EncodedBody) {
-    requestData.body = Buffer.from(base64EncodedBody, 'base64').toString(
+    apiRequestData.body = Buffer.from(base64EncodedBody, 'base64').toString(
       'utf-8'
     );
   }
@@ -48,8 +56,35 @@ export function parseRestfulClientUrl(url: string) {
       headers[decodeURIComponent(key)] = decodeURIComponent(value);
     }
 
-    requestData.headers = headers;
+    apiRequestData.headers = headers;
   }
 
-  return requestData;
+  return apiRequestData;
+}
+
+export function parseRestfulClientUrl(url: string): RestfulRequestData {
+  const [mainPart, queryString] = url.split('?');
+  const [method, base64EncodedEndpointUrl, base64EncodedBody] =
+    mainPart.split('/');
+  const apiRequestData = getApiRequestData(
+    base64EncodedEndpointUrl,
+    base64EncodedBody,
+    queryString
+  );
+
+  return {
+    method,
+    ...apiRequestData,
+  };
+}
+
+export function parseGraphqlClientUrl(url: string): GraphqlRequestData {
+  const [mainPart, queryString] = url.split('?');
+  const [base64EncodedEndpointUrl, base64EncodedBody] = mainPart.split('/');
+
+  return getApiRequestData(
+    base64EncodedEndpointUrl,
+    base64EncodedBody,
+    queryString
+  );
 }
