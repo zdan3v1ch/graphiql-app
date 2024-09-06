@@ -38,6 +38,7 @@ export function RESTClient() {
   const [headers, setHeaders] = useState<[string, string][]>(
     validParsedHeaders ? Object.entries(validParsedHeaders) : []
   );
+  const [variables, setVariables] = useState<[string, string][]>([]);
   const [body, setBody] = useState<string>(validParsedBody ?? '');
 
   useEffect(() => {
@@ -96,6 +97,7 @@ export function RESTClient() {
         />
       </Stack>
       <HeadersInput
+        title="headers"
         headers={headers}
         onHeadersChange={(newHeaders) => {
           setHeaders(newHeaders);
@@ -105,6 +107,13 @@ export function RESTClient() {
         body={body}
         onBodyChange={(newBody) => {
           setBody(newBody);
+        }}
+      />
+      <HeadersInput
+        title="variables"
+        headers={variables}
+        onHeadersChange={(newVariables) => {
+          setVariables(newVariables);
         }}
       />
     </FormControl>
