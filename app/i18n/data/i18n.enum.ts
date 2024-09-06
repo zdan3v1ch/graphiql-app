@@ -3,4 +3,6 @@ export enum Namespaces {
   HEADER = 'header',
   AUTH = 'auth',
   GRAPHQL = 'graphql',
+  ERRORS = 'errors',
+  CLIENTS = 'clients',
 }

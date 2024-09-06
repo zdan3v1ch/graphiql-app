@@ -1,5 +1,6 @@
 'use client';
 
+import useGetAllSearchParams from '@/app/[lng]/[...method]/hooks/useGetAllSearchParams';
 import { i18nConfig, languages } from '@/app/i18n/data/i18n.constants';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import { getExpires } from '@/app/i18n/utils/getExpires';
@@ -18,17 +19,20 @@ export function LanguageToggle() {
   const currentLanguage = i18n.language;
   const router = useRouter();
   const currentPathname = usePathname();
+  const searchParamsString = useGetAllSearchParams();
 
   const handleOnChange = useCallback(
     (event: SelectChangeEvent<string>) => {
       const newLocale = event.target.value;
       document.cookie = `${i18nConfig.localeCookie}=${newLocale};expires=${getExpires()};path=/`;
       router.push(
-        currentPathname.replace(`/${currentLanguage}`, `/${newLocale}`)
+        currentPathname
+          .replace(`/${currentLanguage}`, `/${newLocale}`)
+          .concat('?', searchParamsString)
       );
       router.refresh();
     },
-    [currentLanguage, currentPathname, router]
+    [currentLanguage, currentPathname, router, searchParamsString]
   );
 
   return (

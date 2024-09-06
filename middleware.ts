@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import { i18nRouter } from 'next-i18n-router';
+import { HTTP_METHODS } from 'next/dist/server/web/http';
 
 import { i18nConfig } from '@/app/i18n/data/i18n.constants';
 
@@ -9,7 +10,11 @@ import authConfig from '@/auth/config';
 
 const { auth } = NextAuth(authConfig);
 
-const protectedRoutes = ['/restful', '/graphql', '/history'];
+const protectedRoutes = [
+  ...HTTP_METHODS.map((method) => `/${method}`),
+  '/GRAPHQL',
+  '/requests-history',
+];
 const unprotectedRoutes = ['/signin'];
 
 export default async function middleware(request: NextRequest) {

@@ -1,16 +1,16 @@
-import { AppBar, Box, Chip, IconButton, Stack, Toolbar } from '@mui/material';
+import { AppBar, Box, Chip, Stack, Toolbar } from '@mui/material';
 import FaceIcon from '@mui/icons-material/Face';
-import MenuIcon from '@mui/icons-material/Menu';
 
 import { auth } from '@/auth';
 import { initI18n } from '@/app/i18n/i18n';
-import { LanguageToggle } from '@/app/[lng]/components/LanguageToggle/LanguageToggle';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 
-import NavButton from '../../../../components/NavButton';
+import { LanguageToggle } from '@/app/[lng]/components/LanguageToggle/LanguageToggle';
+import NavButton from '@/components/NavButton';
 import Logo from './components/Logo';
-import SignOutButton from '@/app/[lng]/components/Header/components/SignOutButton';
-import { protectedNavButtonParams } from '@/app/[lng]/components/Header/constants';
+import BurgerMenu from './components/BurgerMenu';
+import SignOutButton from './components/SignOutButton';
+import { protectedNavButtonParams } from './constants';
 
 interface Props {
   language: string;
@@ -45,11 +45,11 @@ const Header: React.FC<Props> = async ({ language }) => {
 
     return (
       <>
-        {protectedNavButtonParams.map((navButton) => (
+        {protectedNavButtonParams.map((params) => (
           <NavButton
-            key={`${navButton.labelHeaderNsKey}${navButton.url}`}
-            label={t(navButton.labelHeaderNsKey, { ns })}
-            url={navButton.url}
+            key={`${params.labelHeaderNsKey}${params.url}`}
+            label={t(params.labelHeaderNsKey, { ns })}
+            url={params.url}
             buttonProps={{
               variant: 'text',
               color: 'inherit',
@@ -71,10 +71,8 @@ const Header: React.FC<Props> = async ({ language }) => {
     <AppBar color="primary" className="" position="static" sx={{ p: 1 }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Logo />
-        <Box>
-          <IconButton sx={{ display: { md: 'none' } }}>
-            <MenuIcon />
-          </IconButton>
+        <Box sx={{ display: { md: 'none' } }}>
+          <BurgerMenu />
         </Box>
         <Stack
           direction="row"
