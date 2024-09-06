@@ -11,7 +11,7 @@ import HeadersInput from '@/components/HeadersInput/HeadersInput';
 import BodyInput from '@/components/BodyInput/BodyInput';
 
 import { parseRestfulClientUrl, removeLocaleFromPath } from '@/app/utils';
-import { validateRequestData } from './utils';
+import { validateRequestData, variableSubstitute } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 
@@ -39,7 +39,10 @@ export function RESTClient() {
     validParsedHeaders ? Object.entries(validParsedHeaders) : []
   );
   const [variables, setVariables] = useState<[string, string][]>([]);
-  const [body, setBody] = useState<string>(validParsedBody ?? '');
+  const [bodyForUrl, setBodyForUrl] = useState<string>(validParsedBody ?? '');
+  const [bodyForInput, setBodyForInput] = useState<string>(
+    validParsedBody ?? ''
+  );
 
   useEffect(() => {
     const localePattern = locales.join('|');
@@ -57,12 +60,12 @@ export function RESTClient() {
       newUrl += '/';
     }
 
-    if (body) {
+    if (bodyForUrl) {
       if (!endpointUrl) {
         newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
       }
 
-      newUrl += `/${window.btoa(body)}`;
+      newUrl += `/${window.btoa(bodyForUrl)}`;
     }
 
     if (headers.length) {
@@ -78,7 +81,23 @@ export function RESTClient() {
     }
 
     history.pushState(null, '', newUrl);
-  }, [method, body, endpointUrl, headers, pathname, i18n.language.length]);
+  }, [
+    method,
+    endpointUrl,
+    headers,
+    pathname,
+    i18n.language.length,
+    bodyForUrl,
+  ]);
+
+  const onBodyChange = (newBody: string) => {
+    setBodyForInput(newBody);
+    setBodyForUrl(variableSubstitute(newBody, variables));
+  };
+  const onVariablesChange = (newVariables: [string, string][]) => {
+    setVariables(newVariables);
+    setBodyForUrl(variableSubstitute(bodyForInput, variables));
+  };
 
   return (
     <FormControl size="small">
@@ -103,18 +122,11 @@ export function RESTClient() {
           setHeaders(newHeaders);
         }}
       />
-      <BodyInput
-        body={body}
-        onBodyChange={(newBody) => {
-          setBody(newBody);
-        }}
-      />
+      <BodyInput body={bodyForInput} onBodyChange={onBodyChange} />
       <HeadersInput
         title="variables"
         headers={variables}
-        onHeadersChange={(newVariables) => {
-          setVariables(newVariables);
-        }}
+        onHeadersChange={onVariablesChange}
       />
     </FormControl>
   );
