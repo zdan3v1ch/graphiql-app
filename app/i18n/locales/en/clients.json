@@ -1,6 +1,8 @@
 {
   "headers": "Headers",
-  "add": "Add",
+  "headersAdd": "Add",
+  "variables": "Variables",
+  "variablesAdd": "Add variables",
   "body": "Body",
   "response": "Response",
   "status": "Status",

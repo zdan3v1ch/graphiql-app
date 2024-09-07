@@ -1,6 +1,5 @@
 'use client';
 
-import { EMPTY_ENDPOINT } from '@/app/[lng]/[...method]/constants';
 import { TextField } from '@mui/material';
 
 interface Props {
@@ -15,7 +14,6 @@ const EndpointUrlInput: React.FC<Props> = ({
   return (
     <TextField
       key="EndpointInput"
-      placeholder={EMPTY_ENDPOINT}
       value={endpointUrl}
       variant="outlined"
       onChange={(event) => {
