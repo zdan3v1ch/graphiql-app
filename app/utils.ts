@@ -1,6 +1,7 @@
 import { EMPTY_ENDPOINT_URL_SYMBOL } from './constants';
+import { ApiResponse, DataApiResponse, ErrorApiResponse } from './model';
 
-export function removeLocaleFromPath(path: string, locales: string[]): string {
+export function removeLocaleFromUrl(path: string, locales: string[]): string {
   const localePattern = locales.join('|');
   const regex = new RegExp(`^/(${localePattern})/(.*)`);
   const match = path.match(regex);
@@ -53,7 +54,10 @@ function getApiRequestData(
 
     for (const pair of headerPairs) {
       const [key, value] = pair.split('=');
-      headers[decodeURIComponent(key)] = decodeURIComponent(value);
+
+      if (key) {
+        headers[decodeURIComponent(key)] = decodeURIComponent(value);
+      }
     }
 
     apiRequestData.headers = headers;
@@ -87,4 +91,16 @@ export function parseGraphqlClientUrl(url: string): GraphqlRequestData {
     base64EncodedBody,
     queryString
   );
+}
+
+export function isDataApiResponse(
+  response: ApiResponse
+): response is DataApiResponse {
+  return Object.hasOwnProperty.call(response, 'data');
+}
+
+export function isErrorApiResponse(
+  response: ApiResponse
+): response is ErrorApiResponse {
+  return Object.hasOwnProperty.call(response, 'error');
 }
