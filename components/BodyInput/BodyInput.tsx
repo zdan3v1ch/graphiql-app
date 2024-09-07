@@ -26,7 +26,7 @@ interface Props {
 const BodyInput: React.FC<Props> = ({ body, onBodyChange }) => {
   const { t } = useTranslation(Namespaces.CLIENTS);
 
-  const [bodyValue, setBodyValue] = useState<Content>({ json: body });
+  const [bodyValue, setBodyValue] = useState<Content>({ text: body });
 
   const handleOnChange = useCallback((content: Content) => {
     setBodyValue(content);

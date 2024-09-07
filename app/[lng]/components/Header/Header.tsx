@@ -72,7 +72,7 @@ const Header: React.FC<Props> = async ({ language }) => {
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Logo />
         <Box sx={{ display: { md: 'none' } }}>
-          <BurgerMenu />
+          <BurgerMenu session={session} />
         </Box>
         <Stack
           direction="row"
