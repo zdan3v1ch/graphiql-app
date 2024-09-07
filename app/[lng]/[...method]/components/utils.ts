@@ -18,3 +18,14 @@ export function validateRequestData(requestData: RestfulRequestData) {
     validParsedBody,
   };
 }
+
+export function variableSubstitute(
+  body: string,
+  variables: [string, string][]
+) {
+  let newBody = body;
+  variables.forEach(([key, value]) => {
+    newBody = newBody.replaceAll(`{{${key}}}`, value);
+  });
+  return newBody;
+}

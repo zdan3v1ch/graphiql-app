@@ -1,6 +1,8 @@
 {
   "headers": "Заголовки",
-  "add": "Добавить",
+  "headersAdd": "Добавить",
+  "variables": "Переменные",
+  "variablesAdd": "Добавить переменные",
   "body": "Тело",
   "response": "Ответ",
   "status": "Статус",
