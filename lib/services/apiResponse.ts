@@ -14,7 +14,29 @@ export const apiResponseApi = createApi({
         };
       },
     }),
+    getGraphqlApiSdl: builder.query<unknown, string>({
+      query(sdlUrl: string) {
+        return {
+          url: `graphql`,
+          method: 'GET',
+          body: sdlUrl,
+        };
+      },
+    }),
+    getGraphqlApiResponse: builder.query<DataApiResponse, string>({
+      query(clientUrl: string) {
+        return {
+          url: `graphql`,
+          method: 'POST',
+          body: clientUrl,
+        };
+      },
+    }),
   }),
 });
 
-export const { useLazyGetRestfulApiResponseQuery } = apiResponseApi;
+export const {
+  useLazyGetRestfulApiResponseQuery,
+  useLazyGetGraphqlApiSdlQuery,
+  useLazyGetGraphqlApiResponseQuery,
+} = apiResponseApi;
