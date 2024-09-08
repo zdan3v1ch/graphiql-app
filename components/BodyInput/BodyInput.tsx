@@ -1,9 +1,11 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography } from '@mui/material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
+
+import JsonEditor from '@/components/JsonEditor/JsonEditor';
+import styles from './BodyInput.module.css';
 
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import {
@@ -13,10 +15,7 @@ import {
   Mode,
   toTextContent,
 } from 'vanilla-jsoneditor';
-import styles from './CustomJsonEditor.module.css';
-const CustomJsonEditor = dynamic(() => import('./CustomJsonEditor'), {
-  ssr: false,
-});
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 
 interface Props {
   body: string;
@@ -25,36 +24,46 @@ interface Props {
 
 const BodyInput: React.FC<Props> = ({ body, onBodyChange }) => {
   const { t } = useTranslation(Namespaces.CLIENTS);
-
-  const [bodyValue, setBodyValue] = useState<Content>({ json: body });
+  const [isVisible, setIsVisible] = useState<boolean>(!!body);
+  const [bodyValue, setBodyValue] = useState<Content>({ text: body });
 
   const handleOnChange = useCallback((content: Content) => {
     setBodyValue(content);
   }, []);
   const onRenderMenu = useCallback((items: MenuItem[]) => {
     const regex = /((Format|Compact) JSON)/gm;
-    const newItems: MenuItem[] = items.filter(
-      (item) => isMenuButton(item) && typeof item.title === 'string' && item.title.match(regex)
+
+    return items.filter(
+      (item) => isMenuButton(item) && item.title?.match(regex)
     );
-    return newItems;
   }, []);
 
   return (
-    <div className={styles.wrapper}>
-      <Typography>{t('body')}</Typography>
-      <CustomJsonEditor
-        mode={Mode.text}
-        content={bodyValue}
-        onChange={handleOnChange}
-        onBlur={() => {
-          const textContent = toTextContent(bodyValue);
-          if (textContent && typeof textContent.text === 'string') {
-            onBodyChange(textContent.text);
-          }
-        }}
-        onRenderMenu={onRenderMenu}
-      />
-    </div>
+    <Stack className={styles.editorWrapper} spacing={2}>
+      <Box display="flex" gap={1} alignItems="center">
+        <Typography component="h2" variant="h5">
+          {t('body')}
+        </Typography>
+        <IconButton
+          onClick={() => {
+            setIsVisible((isVisible) => !isVisible);
+          }}
+        >
+          {isVisible ? <ArrowDropUp /> : <ArrowDropDown />}
+        </IconButton>
+      </Box>
+      {isVisible && (
+        <JsonEditor
+          mode={Mode.text}
+          content={bodyValue}
+          onChange={handleOnChange}
+          onBlur={() => {
+            onBodyChange(toTextContent(bodyValue).text);
+          }}
+          onRenderMenu={onRenderMenu}
+        />
+      )}
+    </Stack>
   );
 };
 

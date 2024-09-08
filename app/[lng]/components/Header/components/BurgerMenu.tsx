@@ -20,7 +20,6 @@ import { useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
 
-import { useSessionData } from '@/auth/SessionDataProvider/useSessionData';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 
 import { protectedNavButtonParams } from '../constants';
@@ -28,9 +27,13 @@ import FaceIcon from '@mui/icons-material/Face';
 import SignOutButton from '@/app/[lng]/components/Header/components/SignOutButton';
 import { LanguageToggle } from '@/app/[lng]/components/LanguageToggle/LanguageToggle';
 import NavButton from '@/components/NavButton';
+import { Session } from 'next-auth';
 
-const BurgerMenu = () => {
-  const session = useSessionData();
+interface Props {
+  session: Session | null;
+}
+
+const BurgerMenu: React.FC<Props> = ({ session }) => {
   const router = useRouter();
   const { t } = useTranslation(Namespaces.HEADER);
   const theme = useTheme();
@@ -44,7 +47,7 @@ const BurgerMenu = () => {
   }, [matches, open, setOpen]);
 
   const renderDrawerList = () => {
-    if (!session.data) {
+    if (!session) {
       return (
         <>
           <List>
@@ -127,7 +130,7 @@ const BurgerMenu = () => {
           {renderDrawerList()}
         </Box>
 
-        {session.data && (
+        {session && (
           <Stack
             direction="row"
             justifyContent="space-between"
@@ -137,7 +140,7 @@ const BurgerMenu = () => {
             <Chip
               color="default"
               icon={<FaceIcon color="primary" />}
-              label={session.data?.user?.name ?? 'No name'}
+              label={session?.user?.name ?? 'No name'}
             />
             <SignOutButton
               onSignOut={() => {

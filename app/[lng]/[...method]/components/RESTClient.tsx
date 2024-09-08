@@ -2,23 +2,31 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import { HTTP_METHOD } from 'next/dist/server/web/http';
-import { FormControl, Stack } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import SendIcon from '@mui/icons-material/Send';
+import { useTheme } from '@mui/material/styles';
+
+import { useLazyGetRestfulApiResponseQuery } from '@/lib/services/apiResponse';
 
 import useGetAllSearchParams from '../hooks/useGetAllSearchParams';
 import HttpMethodSelector from '@/components/HttpMethodSelector/HttpMethodSelector';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
-import HeadersInput from '@/components/HeadersInput/HeadersInput';
+import TextVariablesInput from '@/components/TextVariablesInput/TextVariablesInput';
 import BodyInput from '@/components/BodyInput/BodyInput';
+import ApiResponseViewer from '@/components/ApiResponseViewer/ApiResponseViewer';
 
-import { parseRestfulClientUrl, removeLocaleFromPath } from '@/app/utils';
+import { parseRestfulClientUrl, removeLocaleFromUrl } from '@/app/utils';
 import { validateRequestData, variableSubstitute } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 
 export function RESTClient() {
+  const theme = useTheme();
+  const upSm = useMediaQuery(theme.breakpoints.up('sm'));
   const { i18n } = useTranslation();
   const pathname = usePathname();
-  const delocalizedPathname = removeLocaleFromPath(pathname, locales);
+  const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
   const searchParamsString = useGetAllSearchParams();
   const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
 
@@ -43,6 +51,9 @@ export function RESTClient() {
   const [bodyForInput, setBodyForInput] = useState<string>(
     validParsedBody ?? ''
   );
+
+  const [getApiResponse, { data, isFetching }] =
+    useLazyGetRestfulApiResponseQuery();
 
   useEffect(() => {
     const localePattern = locales.join('|');
@@ -100,34 +111,65 @@ export function RESTClient() {
   };
 
   return (
-    <FormControl size="small">
-      <Stack direction="row" spacing={2}>
-        <HttpMethodSelector
-          method={method}
-          onMethodChange={(newMethod) => {
-            setMethod(newMethod);
-          }}
-        />
-        <EndpointUrlInput
-          endpointUrl={endpointUrl}
-          onEndpointUrlChange={(newEndpointUrl) => {
-            setEndpointUrl(newEndpointUrl);
-          }}
-        />
-      </Stack>
-      <HeadersInput
-        title="headers"
-        headers={headers}
-        onHeadersChange={(newHeaders) => {
-          setHeaders(newHeaders);
+    <div className="flow">
+      <form
+        className="flow"
+        onSubmit={async (event) => {
+          event.preventDefault();
+
+          const url = `${window.location.pathname}${window.location.search}`;
+          const delocalizedUrl = removeLocaleFromUrl(url, locales);
+
+          await getApiResponse(JSON.stringify(delocalizedUrl)).catch(() =>
+            console.error('Failed to fetch data')
+          );
         }}
-      />
-      <BodyInput body={bodyForInput} onBodyChange={onBodyChange} />
-      <HeadersInput
-        title="variables"
-        headers={variables}
-        onHeadersChange={onVariablesChange}
-      />
-    </FormControl>
+      >
+        <Typography>Set up your request to a restful API</Typography>
+        <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
+          <HttpMethodSelector
+            method={method}
+            onMethodChange={(newMethod) => {
+              setMethod(newMethod);
+            }}
+            selectProps={{ disabled: isFetching }}
+          />
+          <EndpointUrlInput
+            endpointUrl={endpointUrl}
+            onEndpointUrlChange={(newEndpointUrl) => {
+              setEndpointUrl(newEndpointUrl);
+            }}
+            textFieldProps={{ fullWidth: true, disabled: isFetching }}
+          />
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            color="primary"
+            endIcon={<SendIcon />}
+            loading={isFetching}
+            loadingPosition="end"
+            sx={{ flexShrink: 0 }}
+          >
+            Send
+          </LoadingButton>
+        </Box>
+        <TextVariablesInput
+          title="headers"
+          disabled={isFetching}
+          variables={headers}
+          onVariablesChange={(newHeaders) => {
+            setHeaders(newHeaders);
+          }}
+        />
+        <BodyInput body={bodyForInput} onBodyChange={onBodyChange} />
+        <TextVariablesInput
+          title="variables"
+          disabled={isFetching}
+          variables={variables}
+          onVariablesChange={onVariablesChange}
+        />
+      </form>
+      <ApiResponseViewer response={data} loading={isFetching} />
+    </div>
   );
 }

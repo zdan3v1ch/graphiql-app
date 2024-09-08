@@ -1,3 +1,7 @@
+:root {
+  --flow-spacer: 2.4rem;
+}
+
 html,
 body {
   display: flex;
@@ -35,4 +39,8 @@ a:hover {
 img {
   max-width: 100%;
   display: block;
+}
+
+:where(.flow > :not(:first-child)) {
+  margin-top: var(--flow-spacer, 2.4rem);
 }
