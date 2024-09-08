@@ -1,9 +1,11 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '@mui/material';
+
+import JsonEditor from '@/components/JsonEditor/JsonEditor';
+import styles from './BodyInput.module.css';
 
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import {
@@ -13,10 +15,6 @@ import {
   Mode,
   toTextContent,
 } from 'vanilla-jsoneditor';
-import styles from './CustomJsonEditor.module.css';
-const CustomJsonEditor = dynamic(() => import('./CustomJsonEditor'), {
-  ssr: false,
-});
 
 interface Props {
   body: string;
@@ -33,16 +31,16 @@ const BodyInput: React.FC<Props> = ({ body, onBodyChange }) => {
   }, []);
   const onRenderMenu = useCallback((items: MenuItem[]) => {
     const regex = /((Format|Compact) JSON)/gm;
-    const newItems = items.filter(
+
+    return items.filter(
       (item) => isMenuButton(item) && item.title?.match(regex)
     );
-    return newItems;
   }, []);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.editorWrapper}>
       <Typography>{t('body')}</Typography>
-      <CustomJsonEditor
+      <JsonEditor
         mode={Mode.text}
         content={bodyValue}
         onChange={handleOnChange}

@@ -3,7 +3,6 @@ import { dir } from 'i18next';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import 'react18-json-view/src/style.css';
 
 import StoreProvider from '@/app/[lng]/StoreProvider';
 import { i18nConfig, namespaces } from '@/app/i18n/data/i18n.constants';
