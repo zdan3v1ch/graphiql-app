@@ -60,6 +60,7 @@ const HeadersInput: React.FC<Props> = ({ title, headers, onHeadersChange }) => {
               <Stack key={index} direction="row" spacing={2}>
                 <TextField
                   value={key}
+                  label={t('key')}
                   variant="outlined"
                   onChange={(event) => {
                     changeHeader(index, event.target.value, value);
@@ -67,6 +68,7 @@ const HeadersInput: React.FC<Props> = ({ title, headers, onHeadersChange }) => {
                 />
                 <TextField
                   value={value}
+                  label={t('value')}
                   variant="outlined"
                   onChange={(event) => {
                     changeHeader(index, key, event.target.value);
