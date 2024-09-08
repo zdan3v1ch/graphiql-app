@@ -1,6 +1,7 @@
-import JsonView from 'react18-json-view';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco as htmlViewerStyle } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import JsonEditor from '@/components/JsonEditor/JsonEditor';
+import { Mode } from 'vanilla-jsoneditor';
 import { CircularProgress } from '@mui/material';
 
 import { DataApiResponse } from '@/app/model';
@@ -33,11 +34,11 @@ const ApiResponseViewer: React.FC<Props> = ({ response, loading }) => {
     }
 
     return (
-      <JsonView
-        src={response.data}
-        enableClipboard={false}
-        displayArrayIndex={false}
-        displaySize
+      <JsonEditor
+        mode={Mode.text}
+        content={{ json: response.data }}
+        readOnly
+        mainMenuBar={false}
       />
     );
   };

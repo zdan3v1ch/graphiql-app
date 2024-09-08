@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { JSONEditor, JSONEditorPropsOptional } from 'vanilla-jsoneditor';
 
-const CustomJsonEditor: React.FC<JSONEditorPropsOptional> = (props) => {
+const JsonEditor: React.FC<JSONEditorPropsOptional> = (props) => {
   const refContainer = useRef<HTMLDivElement>(null);
   const refEditor = useRef<JSONEditor | null>(null);
 
@@ -31,4 +31,4 @@ const CustomJsonEditor: React.FC<JSONEditorPropsOptional> = (props) => {
   return <div ref={refContainer} />;
 };
 
-export default CustomJsonEditor;
+export default JsonEditor;
