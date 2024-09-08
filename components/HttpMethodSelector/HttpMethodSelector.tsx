@@ -1,14 +1,19 @@
 'use client';
 
 import { HTTP_METHOD, HTTP_METHODS } from 'next/dist/server/web/http';
-import { Select, MenuItem } from '@mui/material';
+import { Select, MenuItem, SelectProps } from '@mui/material';
 
 interface Props {
   method: HTTP_METHOD;
   onMethodChange: (method: HTTP_METHOD) => void;
+  selectProps?: SelectProps;
 }
 
-const HttpMethodSelector: React.FC<Props> = ({ method, onMethodChange }) => {
+const HttpMethodSelector: React.FC<Props> = ({
+  method,
+  onMethodChange,
+  selectProps,
+}) => {
   return (
     <Select
       onChange={(event) => {
@@ -16,7 +21,8 @@ const HttpMethodSelector: React.FC<Props> = ({ method, onMethodChange }) => {
       }}
       value={method}
       variant="outlined"
-      sx={{ minWidth: 240 }}
+      sx={{ minWidth: 120 }}
+      {...selectProps}
     >
       {HTTP_METHODS.map((method) => {
         return (

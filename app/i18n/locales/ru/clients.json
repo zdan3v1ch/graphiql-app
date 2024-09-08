@@ -1,9 +1,9 @@
 {
   "headers": "Заголовки",
-  "headersAdd": "Добавить",
+  "headersAdd": "Добавить заголовок",
   "variables": "Переменные",
-  "variablesAdd": "Добавить переменные",
-  "body": "Тело",
+  "variablesAdd": "Добавить переменную",
+  "body": "Тело в формате JSON",
   "response": "Ответ",
   "status": "Статус",
   "key": "Ключ",
