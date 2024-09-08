@@ -8,3 +8,4 @@ export interface ErrorApiResponse {
 }
 
 export type ApiResponse = DataApiResponse | ErrorApiResponse;
+export type GraphqlSdlResponse = unknown;

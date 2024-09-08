@@ -37,10 +37,10 @@ export async function POST(
       body,
     });
 
-    const contentType = restfulResponse.headers.get('content-type');
+    const responseContentType = restfulResponse.headers.get('content-type');
     let data: unknown;
 
-    if (contentType?.includes('application/json')) {
+    if (responseContentType?.includes('application/json')) {
       data = await restfulResponse.json();
     } else {
       data = await restfulResponse.text();
