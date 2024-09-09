@@ -3,7 +3,7 @@ import z from 'zod';
 
 export function removeLocaleFromUrl(path: string, locales: string[]): string {
   const localePattern = locales.join('|');
-  const regex = new RegExp(`^/(${localePattern})/(.*)`);
+  const regex = new RegExp(`^/(${localePattern})(/.*)`);
   const match = path.match(regex);
 
   if (match?.[2]) {
