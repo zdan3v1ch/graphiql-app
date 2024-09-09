@@ -8,7 +8,7 @@ import { locales } from '@/app/i18n/data/i18n.constants';
 import useGetAllSearchParams from '../../[...method]/hooks/useGetAllSearchParams';
 import { validateRequestGraphqlData } from '../../[...method]/components/utils';
 import { useEffect, useState } from 'react';
-import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
+// import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
@@ -31,11 +31,12 @@ export function GraphQl() {
   const {
     validParsedEndpointUrl,
     validParsedHeaders,
-    // validParsedBody,
+    validParsedBody,
   } = validateRequestGraphqlData(requestData);
 
-
-
+  const decodeBody: { query: string; variables: string } = validParsedBody
+    ? (JSON.parse(validParsedBody) as { query: string; variables: string })
+    : { query: '', variables: '' };
   const [endpointUrl, setEndpointUrl] = useState<string>(
     validParsedEndpointUrl ?? ''
   );
@@ -47,13 +48,8 @@ export function GraphQl() {
   const [headers, setHeaders] = useState<[string, string][]>(
     validParsedHeaders ? Object.entries(validParsedHeaders) : []
   );
-  const [query, setQuery] = useState<string>('');
-  const [variables, setVariables] = useState<string>('');
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const bodyForUrl = {
-    query,
-    variables
-  }
+  const [query, setQuery] = useState<string>(decodeBody.query ?? '');
+  const [variables, setVariables] = useState<string>(decodeBody.variables ?? '');
 
 
   const [getApiResponse, { data, isFetching }] =
@@ -74,12 +70,8 @@ export function GraphQl() {
       newUrl += `${window.btoa(endpointUrl)}`;
     }
 
-    if (bodyForUrl) {
-      if (!endpointUrl) {
-        newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
-      }
-
-      newUrl += `/${window.btoa(JSON.stringify(bodyForUrl))}`;
+    if (query !== '' || variables !== '') {
+      newUrl += `/${window.btoa(JSON.stringify({ query: query, variables: variables }))}`;
     }
 
     if (headers.length) {
@@ -95,13 +87,7 @@ export function GraphQl() {
     }
 
     history.pushState(null, '', newUrl);
-  }, [
-    endpointUrl,
-    headers,
-    pathname,
-    i18n.language.length,
-    bodyForUrl,
-  ]);
+  }, [endpointUrl, headers, pathname, i18n.language.length, query, variables]);
 
 
   return (
@@ -110,6 +96,7 @@ export function GraphQl() {
         className="flow"
         onSubmit={async (event) => {
           event.preventDefault();
+          console.log('click')
 
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
@@ -130,7 +117,7 @@ export function GraphQl() {
             textFieldProps={{ fullWidth: true, disabled: isFetching }}
           />
           <LoadingButton
-            type="button"
+            type="submit"
             variant="contained"
             color="primary"
             endIcon={<SendIcon />}
@@ -151,7 +138,7 @@ export function GraphQl() {
             textFieldProps={{ fullWidth: true, disabled: isFetching }}
           />
           <LoadingButton
-            type="submit"
+            type="button"
             variant="contained"
             color="primary"
             endIcon={<SendIcon />}

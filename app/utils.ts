@@ -1,5 +1,4 @@
 import { EMPTY_ENDPOINT_URL_SYMBOL } from './constants';
-import z from 'zod';
 
 export function removeLocaleFromUrl(path: string, locales: string[]): string {
   const localePattern = locales.join('|');
@@ -24,11 +23,8 @@ export interface RestfulRequestData extends ApiRequestData {
 }
 
 export interface GraphqlRequestData extends ApiRequestData {
-  method: string,
-  body?: {
-    query: string;
-    variables: Record<string, string>;
-  };
+  method: string;
+  body?: string;
 }
 
 function getApiRequestData(
@@ -86,25 +82,31 @@ export function parseRestfulClientUrl(url: string): RestfulRequestData {
 
 export function parseGraphqlClientUrl(url: string): GraphqlRequestData {
   const [mainPart, queryString] = url.split('?');
-  const [method, base64EncodedEndpointUrl, base64EncodedBody] = mainPart.split('/');
+  const [method, base64EncodedEndpointUrl, base64EncodedBody] =
+    mainPart.split('/');
   const apiRequestData = getApiRequestData(
     base64EncodedEndpointUrl,
     queryString
   );
   const graphqlRequestData: GraphqlRequestData = { method, ...apiRequestData };
 
-  if (base64EncodedBody) {
-    const body = Buffer.from(base64EncodedBody, 'base64').toString('utf-8');
-    const { data: validBody, success } = z
-      .object({
-        query: z.string(),
-        variables: z.record(z.string(), z.string()),
-      })
-      .safeParse(body);
+  // if (base64EncodedBody) {
+  //   const body = Buffer.from(base64EncodedBody, 'base64').toString('utf-8');
+  //   const { data: validBody, success } = z
+  //     .object({
+  //       query: z.string(),
+  //       variables:z.string(),
+  //     })
+  //     .safeParse(body);
 
-    if (success) {
-      graphqlRequestData.body = validBody;
-    }
+  //   if (success) {
+  //     graphqlRequestData.body = validBody;
+  //   }
+  // }
+  if (base64EncodedBody) {
+    graphqlRequestData.body = Buffer.from(base64EncodedBody, 'base64').toString(
+      'utf-8'
+    );
   }
 
   return graphqlRequestData;
