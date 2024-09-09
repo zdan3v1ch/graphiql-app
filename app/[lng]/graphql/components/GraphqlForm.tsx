@@ -49,6 +49,7 @@ export function GraphQl() {
   );
   const [query, setQuery] = useState<string>('');
   const [variables, setVariables] = useState<string>('');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const bodyForUrl = {
     query,
     variables
