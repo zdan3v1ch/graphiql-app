@@ -1,11 +1,15 @@
 {
+  "restClient": "RESTfull Client",
   "headers": "Headers",
   "headersAdd": "Add header",
   "variables": "Variables",
   "variablesAdd": "Add variable",
   "body": "Body JSON",
-  "response": "Response",
+  "send": "Send",
+  "requestPrompt": "Set up your request to a restful API",
+  "response": "API Response",
+  "responseError": "Failed to fetch data",
   "status": "Status",
-  "key": "Key",
-  "value": "Value"
+  "responseBody": "Body",
+  "emptyResponse": "Send your first request to see the response"
 }

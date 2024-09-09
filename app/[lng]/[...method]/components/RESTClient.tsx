@@ -20,14 +20,19 @@ import { parseRestfulClientUrl, removeLocaleFromUrl } from '@/app/utils';
 import { validateRequestData, variableSubstitute } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
+import { Store } from '@/lib/localStorage/localStorage';
+import { TSessionContextValue } from '@/auth/SessionDataProvider/SessionDataProvider';
+import { useSessionData } from '@/auth/SessionDataProvider/useSessionData';
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
 
 export function RESTClient() {
   const theme = useTheme();
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation(Namespaces.CLIENTS);
   const pathname = usePathname();
   const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
   const searchParamsString = useGetAllSearchParams();
+  const sessionContent: TSessionContextValue = useSessionData();
   const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
 
   const requestData = parseRestfulClientUrl(clientUrl);
@@ -109,7 +114,6 @@ export function RESTClient() {
     setVariables(newVariables);
     setBodyForUrl(variableSubstitute(bodyForInput, variables));
   };
-
   return (
     <div className="flow">
       <form
@@ -119,13 +123,13 @@ export function RESTClient() {
 
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
-
-          await getApiResponse(JSON.stringify(delocalizedUrl)).catch(() =>
-            console.error('Failed to fetch data')
+          Store.addRequest(delocalizedUrl, sessionContent.data?.user?.email);
+          await getApiResponse(JSON.stringify(delocalizedUrl.slice(1))).catch(
+            () => console.error(t('responseError'))
           );
         }}
       >
-        <Typography>Set up your request to a restful API</Typography>
+        <Typography>{t('requestPrompt')}</Typography>
         <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
           <HttpMethodSelector
             method={method}
@@ -150,7 +154,7 @@ export function RESTClient() {
             loadingPosition="end"
             sx={{ flexShrink: 0 }}
           >
-            Send
+            {t('send')}
           </LoadingButton>
         </Box>
         <TextVariablesInput
