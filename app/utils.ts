@@ -24,6 +24,7 @@ export interface RestfulRequestData extends ApiRequestData {
 }
 
 export interface GraphqlRequestData extends ApiRequestData {
+  method: string,
   body?: {
     query: string;
     variables: Record<string, string>;
@@ -85,12 +86,12 @@ export function parseRestfulClientUrl(url: string): RestfulRequestData {
 
 export function parseGraphqlClientUrl(url: string): GraphqlRequestData {
   const [mainPart, queryString] = url.split('?');
-  const [base64EncodedEndpointUrl, base64EncodedBody] = mainPart.split('/');
+  const [method, base64EncodedEndpointUrl, base64EncodedBody] = mainPart.split('/');
   const apiRequestData = getApiRequestData(
     base64EncodedEndpointUrl,
     queryString
   );
-  const graphqlRequestData: GraphqlRequestData = { ...apiRequestData };
+  const graphqlRequestData: GraphqlRequestData = { method, ...apiRequestData };
 
   if (base64EncodedBody) {
     const body = Buffer.from(base64EncodedBody, 'base64').toString('utf-8');

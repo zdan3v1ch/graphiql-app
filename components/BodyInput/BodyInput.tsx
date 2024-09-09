@@ -20,12 +20,15 @@ import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 interface Props {
   body: string;
   onBodyChange: (body: string) => void;
+  namespace: boolean;
+  variable?: boolean;
 }
 
-const BodyInput: React.FC<Props> = ({ body, onBodyChange }) => {
-  const { t } = useTranslation(Namespaces.CLIENTS);
+const BodyInput: React.FC<Props> = ({ body, onBodyChange, namespace, variable }) => {
+  const { t } = useTranslation(namespace ? Namespaces.CLIENTS : Namespaces.GRAPHQL );
   const [isVisible, setIsVisible] = useState<boolean>(!!body);
   const [bodyValue, setBodyValue] = useState<Content>({ text: body });
+  const variableInput = variable ? t('variablesGraphql') : t('queryGraphql');
 
   const handleOnChange = useCallback((content: Content) => {
     setBodyValue(content);
@@ -42,7 +45,7 @@ const BodyInput: React.FC<Props> = ({ body, onBodyChange }) => {
     <Stack className={styles.editorWrapper} spacing={2}>
       <Box display="flex" gap={1} alignItems="center">
         <Typography component="h2" variant="h5">
-          {t('body')}
+          {namespace ? t('body') : variableInput}
         </Typography>
         <IconButton
           onClick={() => {

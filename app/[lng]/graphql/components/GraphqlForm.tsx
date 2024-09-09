@@ -1,101 +1,179 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import { Container, Button, Typography, Box } from '@mui/material';
-import { Namespaces } from '@/app/i18n/data/i18n.enum';
+import { Typography, Box, useTheme, useMediaQuery } from '@mui/material';
+import { usePathname } from 'next/navigation';
+import { parseGraphqlClientUrl, removeLocaleFromUrl } from '@/app/utils';
+import { locales } from '@/app/i18n/data/i18n.constants';
+import useGetAllSearchParams from '../../[...method]/hooks/useGetAllSearchParams';
+import { validateRequestGraphqlData } from '../../[...method]/components/utils';
+import { useEffect, useState } from 'react';
+import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
+import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
+import { LoadingButton } from '@mui/lab';
+import SendIcon from '@mui/icons-material/Send';
+import TextVariablesInput from '@/components/TextVariablesInput/TextVariablesInput';
+import BodyInput from '@/components/BodyInput/BodyInput';
+import ApiResponseViewer from '@/components/ApiResponseViewer/ApiResponseViewer';
+import { useLazyGetGraphqlApiResponseQuery } from '@/lib/services/apiResponse';
 
-import FormInputText from '@/components/form/FormInputText';
+
+export function GraphQl() {
+  const theme = useTheme();
+  const upSm = useMediaQuery(theme.breakpoints.up('sm'));
+  const { i18n } = useTranslation();
+  const pathname = usePathname();
+  const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
+  const searchParamsString = useGetAllSearchParams();
+  const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
+
+  const requestData = parseGraphqlClientUrl(clientUrl);
+  const {
+    validParsedEndpointUrl,
+    validParsedHeaders,
+    // validParsedBody,
+  } = validateRequestGraphqlData(requestData);
 
 
-export interface GraphqlData {
-  endpoint: string;
-  sdl?: string;
-  query?: string;
-  variables?: string | number;
-  headerKey?: string;
-  headerValue?: string | number;
-}
 
-const GraphqlForm = () => {
-  const { t } = useTranslation(Namespaces.GRAPHQL);
+  const [endpointUrl, setEndpointUrl] = useState<string>(
+    validParsedEndpointUrl ?? ''
+  );
+
+  const [sdlUrl, setSdlUrl] = useState<string>(
+    validParsedEndpointUrl ?? ''
+  );
+
+  const [headers, setHeaders] = useState<[string, string][]>(
+    validParsedHeaders ? Object.entries(validParsedHeaders) : []
+  );
+  const [query, setQuery] = useState<string>('');
+  const [variables, setVariables] = useState<string>('');
+  const bodyForUrl = {
+    query,
+    variables
+  }
+
+
+  const [getApiResponse, { data, isFetching }] =
+    useLazyGetGraphqlApiResponseQuery();
+
+  useEffect(() => {
+    const localePattern = locales.join('|');
+    const regex = new RegExp(`^/(${localePattern})/(.*)`);
+
+    // check if pathname starts with locale
+    let newUrl = regex.test(pathname)
+      ? pathname.slice(0, 1 + i18n.language.length + 1) // if yes then add locale and slashes after and before it to the new url
+      : '/';
+
+    newUrl += 'GRAPHQL/';
+
+    if (endpointUrl) {
+      newUrl += `${window.btoa(endpointUrl)}`;
+    }
+
+    if (bodyForUrl) {
+      if (!endpointUrl) {
+        newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
+      }
+
+      newUrl += `/${window.btoa(JSON.stringify(bodyForUrl))}`;
+    }
+
+    if (headers.length) {
+      newUrl += '?';
+
+      headers.forEach(([key, value], index) => {
+        if (index > 0) {
+          newUrl += '&';
+        }
+
+        newUrl += `${key}=${encodeURIComponent(value)}`;
+      });
+    }
+
+    history.pushState(null, '', newUrl);
+  }, [
+    endpointUrl,
+    headers,
+    pathname,
+    i18n.language.length,
+    bodyForUrl,
+  ]);
 
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '1rem',
+    <div className="flow">
+      <form
+        className="flow"
+        onSubmit={async (event) => {
+          event.preventDefault();
+
+          const url = `${window.location.pathname}${window.location.search}`;
+          const delocalizedUrl = removeLocaleFromUrl(url, locales);
+
+          await getApiResponse(JSON.stringify(delocalizedUrl)).catch(() =>
+            console.error('Failed to fetch data')
+          );
         }}
       >
-        <Typography variant="h5" component="h1" textAlign="center" gutterBottom>
-          {t('titleGraphql')}
-        </Typography>
-        <form
-          action={() => {console.log('do something')}}
-          onSubmit={() => {
-            console.log('submit')
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '1rem',
+        <Typography>Set up your request to a restful API</Typography>
+        <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
+          <EndpointUrlInput
+            endpointUrl={endpointUrl}
+            onEndpointUrlChange={(newEndpointUrl) => {
+              setEndpointUrl(newEndpointUrl);
+              setSdlUrl(`${newEndpointUrl}?sdl`);
             }}
+            textFieldProps={{ fullWidth: true, disabled: isFetching }}
+          />
+          <LoadingButton
+            type="button"
+            variant="contained"
+            color="primary"
+            endIcon={<SendIcon />}
+            loading={isFetching}
+            loadingPosition="end"
+            sx={{ flexShrink: 0 }}
           >
-            {/* <FormInputText
-              name="endpoint"
-              control={control}
-              label={t('endpointUrlGraphql')}
-              type="text"
-              required
-              margin="normal"
-            /> */}
-            <FormInputText
-              name="sdl"
-              label={t('sdlUrlGraphql')}
-              type="text"
-              margin="normal"
-            />
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2em' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="h6" textAlign="center" gutterBottom>
-                {t('headersGraphql')}
-              </Typography>
-              <Button
-              >
-                {t('addHeadersGraphql')}
-              </Button>
-            </Box>
-            
-          </Box>
-          <FormInputText
-            name="query"
-            label={t('queryGraphql')}
-            type="text"
-            margin="normal"
+            Send
+          </LoadingButton>
+        </Box>
+
+        <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
+          <EndpointUrlInput
+            endpointUrl={sdlUrl}
+            onEndpointUrlChange={(newSdlUrl) => {
+              setSdlUrl(newSdlUrl.endsWith('?sdl') ? newSdlUrl : `${newSdlUrl}?sdl`);
+            }}
+            textFieldProps={{ fullWidth: true, disabled: isFetching }}
           />
-          <FormInputText
-            name="variables"
-            label={t('variablesGraphql')}
-            type="text"
-            margin="normal"
-          />
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             color="primary"
+            endIcon={<SendIcon />}
+            loading={isFetching}
+            loadingPosition="end"
+            sx={{ flexShrink: 0 }}
           >
-            {t('sendRequestGraphql')}
-          </Button>
-        </form>
-      </Box>
-    </Container>
-  );
-};
+            Send
+          </LoadingButton>
+        </Box>
 
-export default GraphqlForm;
+        <TextVariablesInput
+          title="headers"
+          disabled={isFetching}
+          variables={headers}
+          onVariablesChange={(newHeaders) => {
+            setHeaders(newHeaders);
+          }}
+        />
+        <BodyInput body={query} onBodyChange={setQuery} namespace={false} />
+        <BodyInput body={variables} onBodyChange={setVariables} namespace={false} variable={true} />
+      </form>
+      <ApiResponseViewer response={data} loading={isFetching} />
+    </div>
+  );
+}

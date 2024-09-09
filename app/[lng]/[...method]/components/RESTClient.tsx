@@ -161,7 +161,7 @@ export function RESTClient() {
             setHeaders(newHeaders);
           }}
         />
-        <BodyInput body={bodyForInput} onBodyChange={onBodyChange} />
+        <BodyInput body={bodyForInput} onBodyChange={onBodyChange} namespace={true} />
         <TextVariablesInput
           title="variables"
           disabled={isFetching}
