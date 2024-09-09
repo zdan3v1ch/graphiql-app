@@ -6,7 +6,7 @@
   "variablesAdd": "Добавить переменную",
   "body": "Тело в формате JSON",
   "send": "Отправить",
-  "requestPrompt": "Настройте свой запрос к restful API",
+  "requestPrompt": "Настройте свой запрос к RESTful API",
   "response": "API ответ",
   "responseError": "Не удалось получить данные",
   "status": "Статус",

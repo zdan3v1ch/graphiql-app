@@ -21,7 +21,7 @@ const HttpMethodSelector: React.FC<Props> = ({
       }}
       value={method}
       variant="outlined"
-      sx={{ minWidth: 120 }}
+      sx={{ minWidth: 130 }}
       {...selectProps}
     >
       {HTTP_METHODS.map((method) => {

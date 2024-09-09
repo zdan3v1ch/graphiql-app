@@ -6,7 +6,7 @@
   "variablesAdd": "Add variable",
   "body": "Body JSON",
   "send": "Send",
-  "requestPrompt": "Set up your request to a restful API",
+  "requestPrompt": "Set up your request to a RESTful API",
   "response": "API Response",
   "responseError": "Failed to fetch data",
   "status": "Status",
