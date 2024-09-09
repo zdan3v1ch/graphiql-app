@@ -54,7 +54,11 @@ export default function History() {
           const mainPart = request.split('?')[0] ?? '';
           const [method, base64EncodedEndpointUrl] = mainPart.split('/');
           const endpointUrl = base64EncodedEndpointUrl
-            ? Buffer.from(base64EncodedEndpointUrl, 'base64').toString('utf-8')
+            ? decodeURI(
+                Buffer.from(base64EncodedEndpointUrl, 'base64').toString(
+                  'utf-8'
+                )
+              )
             : '';
 
           let newUrl = regex.test(pathname)
