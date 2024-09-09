@@ -1,6 +1,6 @@
 'use client';
 
-import useGetAllSearchParams from '@/app/[lng]/[...method]/hooks/useGetAllSearchParams';
+import useGetAllSearchParams from '../../hooks/useGetAllSearchParams';
 import { i18nConfig, languages } from '@/app/i18n/data/i18n.constants';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import { getExpires } from '@/app/i18n/utils/getExpires';

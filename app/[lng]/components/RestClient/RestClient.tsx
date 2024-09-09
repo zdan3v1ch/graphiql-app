@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
@@ -9,7 +11,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { useLazyGetRestfulApiResponseQuery } from '@/lib/services/apiResponse';
 
-import useGetAllSearchParams from '../hooks/useGetAllSearchParams';
+import useGetAllSearchParams from '@/app/[lng]/hooks/useGetAllSearchParams';
 import HttpMethodSelector from '@/components/HttpMethodSelector/HttpMethodSelector';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
 import TextVariablesInput from '@/components/TextVariablesInput/TextVariablesInput';
@@ -21,7 +23,7 @@ import { validateRequestData, variableSubstitute } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 
-export function RESTClient() {
+export function RestClient() {
   const theme = useTheme();
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
   const { i18n } = useTranslation();
@@ -30,7 +32,7 @@ export function RESTClient() {
   const searchParamsString = useGetAllSearchParams();
   const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
 
-  const requestData = parseRestfulClientUrl(clientUrl);
+  const requestData = parseRestfulClientUrl(clientUrl.slice(1));
 
   const {
     validParsedMethod,
@@ -66,7 +68,7 @@ export function RESTClient() {
     newUrl += method;
 
     if (endpointUrl) {
-      newUrl += `/${window.btoa(endpointUrl)}`;
+      newUrl += `/${window.btoa(encodeURI(endpointUrl))}`;
     } else {
       newUrl += '/';
     }
@@ -76,7 +78,7 @@ export function RESTClient() {
         newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
       }
 
-      newUrl += `/${window.btoa(bodyForUrl)}`;
+      newUrl += `/${window.btoa(encodeURI(bodyForUrl))}`;
     }
 
     if (headers.length) {
@@ -120,8 +122,8 @@ export function RESTClient() {
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
 
-          await getApiResponse(JSON.stringify(delocalizedUrl)).catch(() =>
-            console.error('Failed to fetch data')
+          await getApiResponse(JSON.stringify(delocalizedUrl.slice(1))).catch(
+            () => console.error('Failed to fetch data')
           );
         }}
       >

@@ -5,8 +5,8 @@ import { Typography, Box, useTheme, useMediaQuery } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { parseGraphqlClientUrl, removeLocaleFromUrl } from '@/app/utils';
 import { locales } from '@/app/i18n/data/i18n.constants';
-import useGetAllSearchParams from '../../[...method]/hooks/useGetAllSearchParams';
-import { validateRequestGraphqlData } from '../../[...method]/components/utils';
+import useGetAllSearchParams from '../../hooks/useGetAllSearchParams';
+import { validateRequestGraphqlData } from '../utils';
 import { useEffect, useState } from 'react';
 // import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
@@ -16,7 +16,6 @@ import TextVariablesInput from '@/components/TextVariablesInput/TextVariablesInp
 import BodyInput from '@/components/BodyInput/BodyInput';
 import ApiResponseViewer from '@/components/ApiResponseViewer/ApiResponseViewer';
 import { useLazyGetGraphqlApiResponseQuery } from '@/lib/services/apiResponse';
-
 
 export function GraphQl() {
   const theme = useTheme();
@@ -28,11 +27,8 @@ export function GraphQl() {
   const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
 
   const requestData = parseGraphqlClientUrl(clientUrl);
-  const {
-    validParsedEndpointUrl,
-    validParsedHeaders,
-    validParsedBody,
-  } = validateRequestGraphqlData(requestData);
+  const { validParsedEndpointUrl, validParsedHeaders, validParsedBody } =
+    validateRequestGraphqlData(requestData);
 
   const decodeBody: { query: string; variables: string } = validParsedBody
     ? (JSON.parse(validParsedBody) as { query: string; variables: string })
@@ -41,16 +37,15 @@ export function GraphQl() {
     validParsedEndpointUrl ?? ''
   );
 
-  const [sdlUrl, setSdlUrl] = useState<string>(
-    validParsedEndpointUrl ?? ''
-  );
+  const [sdlUrl, setSdlUrl] = useState<string>(validParsedEndpointUrl ?? '');
 
   const [headers, setHeaders] = useState<[string, string][]>(
     validParsedHeaders ? Object.entries(validParsedHeaders) : []
   );
   const [query, setQuery] = useState<string>(decodeBody.query ?? '');
-  const [variables, setVariables] = useState<string>(decodeBody.variables ?? '');
-
+  const [variables, setVariables] = useState<string>(
+    decodeBody.variables ?? ''
+  );
 
   const [getApiResponse, { data, isFetching }] =
     useLazyGetGraphqlApiResponseQuery();
@@ -89,14 +84,13 @@ export function GraphQl() {
     history.pushState(null, '', newUrl);
   }, [endpointUrl, headers, pathname, i18n.language.length, query, variables]);
 
-
   return (
     <div className="flow">
       <form
         className="flow"
         onSubmit={async (event) => {
           event.preventDefault();
-          console.log('click')
+          console.log('click');
 
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
@@ -133,7 +127,9 @@ export function GraphQl() {
           <EndpointUrlInput
             endpointUrl={sdlUrl}
             onEndpointUrlChange={(newSdlUrl) => {
-              setSdlUrl(newSdlUrl.endsWith('?sdl') ? newSdlUrl : `${newSdlUrl}?sdl`);
+              setSdlUrl(
+                newSdlUrl.endsWith('?sdl') ? newSdlUrl : `${newSdlUrl}?sdl`
+              );
             }}
             textFieldProps={{ fullWidth: true, disabled: isFetching }}
           />
@@ -159,7 +155,12 @@ export function GraphQl() {
           }}
         />
         <BodyInput body={query} onBodyChange={setQuery} namespace={false} />
-        <BodyInput body={variables} onBodyChange={setVariables} namespace={false} variable={true} />
+        <BodyInput
+          body={variables}
+          onBodyChange={setVariables}
+          namespace={false}
+          variable={true}
+        />
       </form>
       <ApiResponseViewer response={data} loading={isFetching} />
     </div>
