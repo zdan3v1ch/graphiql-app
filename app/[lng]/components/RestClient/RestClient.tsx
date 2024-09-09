@@ -19,7 +19,7 @@ import BodyInput from '@/components/BodyInput/BodyInput';
 import ApiResponseViewer from '@/components/ApiResponseViewer/ApiResponseViewer';
 
 import { parseRestfulClientUrl, removeLocaleFromUrl } from '@/app/utils';
-import { isLatinRange, validateRequestData, variableSubstitute } from './utils';
+import { validateRequestData, variableSubstitute } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 
@@ -40,20 +40,16 @@ export function RestClient() {
     validParsedHeaders,
     validParsedBody,
   } = validateRequestData(requestData);
-  const initialEndpointUrl =
-    validParsedEndpointUrl && isLatinRange(validParsedEndpointUrl)
-      ? validParsedEndpointUrl
-      : '';
-  const initialBodyForUrl =
-    validParsedBody && isLatinRange(validParsedBody) ? validParsedBody : '';
 
   const [method, setMethod] = useState<HTTP_METHOD>(validParsedMethod ?? 'GET');
-  const [endpointUrl, setEndpointUrl] = useState<string>(initialEndpointUrl);
+  const [endpointUrl, setEndpointUrl] = useState<string>(
+    validParsedEndpointUrl ?? ''
+  );
   const [headers, setHeaders] = useState<[string, string][]>(
     validParsedHeaders ? Object.entries(validParsedHeaders) : []
   );
   const [variables, setVariables] = useState<[string, string][]>([]);
-  const [bodyForUrl, setBodyForUrl] = useState<string>(initialBodyForUrl);
+  const [bodyForUrl, setBodyForUrl] = useState<string>(validParsedBody ?? '');
   const [bodyForInput, setBodyForInput] = useState<string>(
     validParsedBody ?? ''
   );
@@ -72,7 +68,7 @@ export function RestClient() {
     newUrl += method;
 
     if (endpointUrl) {
-      newUrl += `/${window.btoa(endpointUrl)}`;
+      newUrl += `/${window.btoa(encodeURI(endpointUrl))}`;
     } else {
       newUrl += '/';
     }
@@ -82,7 +78,7 @@ export function RestClient() {
         newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
       }
 
-      newUrl += `/${window.btoa(bodyForUrl)}`;
+      newUrl += `/${window.btoa(encodeURI(bodyForUrl))}`;
     }
 
     if (headers.length) {

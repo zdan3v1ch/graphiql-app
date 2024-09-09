@@ -2,16 +2,6 @@ import { RestfulRequestData } from '@/app/utils';
 import z from 'zod';
 import { HTTP_METHODS } from 'next/dist/server/web/http';
 
-export function isLatinRange(str: string): boolean {
-  try {
-    window.btoa(str);
-
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
 export function validateRequestData(requestData: RestfulRequestData) {
   const { method, endpointUrl, headers, body } = requestData;
   const { data: validParsedMethod } = z.enum(HTTP_METHODS).safeParse(method);
