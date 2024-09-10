@@ -8,7 +8,7 @@ import { Box, Typography, useMediaQuery } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
 import { useTheme } from '@mui/material/styles';
-
+import { Session } from 'next-auth';
 import { useLazyGetRestfulApiResponseQuery } from '@/lib/services/apiResponse';
 
 import useGetAllSearchParams from '@/app/[lng]/hooks/useGetAllSearchParams';
@@ -22,11 +22,13 @@ import { parseRestfulClientUrl, removeLocaleFromUrl } from '@/app/utils';
 import { validateRequestData, variableSubstitute } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
+import { Store } from '@/lib/localStorage/localStorage';
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
 
-export function RestClient() {
+export function RestClient({ session }: { session: Session | null }) {
   const theme = useTheme();
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation(Namespaces.CLIENTS);
   const pathname = usePathname();
   const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
   const searchParamsString = useGetAllSearchParams();
@@ -111,7 +113,6 @@ export function RestClient() {
     setVariables(newVariables);
     setBodyForUrl(variableSubstitute(bodyForInput, variables));
   };
-
   return (
     <div className="flow">
       <form
@@ -121,13 +122,14 @@ export function RestClient() {
 
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
-
+          Store.addRequest(delocalizedUrl, session?.user?.email);
           await getApiResponse(JSON.stringify(delocalizedUrl.slice(1))).catch(
-            () => console.error('Failed to fetch data')
+            () => console.error(t('responseError'))
           );
         }}
       >
-        <Typography>Set up your request to a restful API</Typography>
+        <Typography variant="h1">{t('restClient')}</Typography>
+        <Typography>{t('requestPrompt')}</Typography>
         <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
           <HttpMethodSelector
             method={method}
@@ -152,7 +154,7 @@ export function RestClient() {
             loadingPosition="end"
             sx={{ flexShrink: 0 }}
           >
-            Send
+            {t('send')}
           </LoadingButton>
         </Box>
         <TextVariablesInput

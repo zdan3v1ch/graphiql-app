@@ -1,11 +1,15 @@
 {
+  "restClient": "RESTfull-клиент",
   "headers": "Заголовки",
   "headersAdd": "Добавить заголовок",
   "variables": "Переменные",
   "variablesAdd": "Добавить переменную",
   "body": "Тело в формате JSON",
-  "response": "Ответ",
+  "send": "Отправить",
+  "requestPrompt": "Настройте свой запрос к RESTful API",
+  "response": "API ответ",
+  "responseError": "Не удалось получить данные",
   "status": "Статус",
-  "key": "Ключ",
-  "value": "Значение"
+  "responseBody": "Тело",
+  "emptyResponse": "Отправьте свой первый запрос, чтобы увидеть ответ"
 }

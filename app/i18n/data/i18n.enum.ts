@@ -5,4 +5,5 @@ export enum Namespaces {
   GRAPHQL = 'graphql',
   ERRORS = 'errors',
   CLIENTS = 'clients',
+  HISTORY = 'history',
 }
