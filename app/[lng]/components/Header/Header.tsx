@@ -1,4 +1,4 @@
-import { AppBar, Box, Chip, Stack, Toolbar } from '@mui/material';
+import { Box, Chip, Stack } from '@mui/material';
 import FaceIcon from '@mui/icons-material/Face';
 
 import { auth } from '@/auth';
@@ -7,6 +7,7 @@ import { Namespaces } from '@/app/i18n/data/i18n.enum';
 
 import { LanguageToggle } from '@/app/[lng]/components/LanguageToggle/LanguageToggle';
 import NavButton from '@/components/NavButton';
+import HeaderBar from './components/HeaderBar';
 import Logo from './components/Logo';
 import BurgerMenu from './components/BurgerMenu';
 import SignOutButton from './components/SignOutButton';
@@ -68,23 +69,21 @@ const Header: React.FC<Props> = async ({ language }) => {
   };
 
   return (
-    <AppBar color="primary" className="" position="static" sx={{ p: 1 }}>
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Logo />
-        <Box sx={{ display: { md: 'none' } }}>
-          <BurgerMenu session={session} />
-        </Box>
-        <Stack
-          direction="row"
-          spacing={2}
-          alignItems="center"
-          sx={{ display: { xs: 'none', md: 'flex' } }}
-        >
-          {renderUserNavigation()}
-          <LanguageToggle />
-        </Stack>
-      </Toolbar>
-    </AppBar>
+    <HeaderBar>
+      <Logo />
+      <Box sx={{ display: { md: 'none' } }}>
+        <BurgerMenu session={session} />
+      </Box>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{ display: { xs: 'none', md: 'flex' } }}
+      >
+        {renderUserNavigation()}
+        <LanguageToggle />
+      </Stack>
+    </HeaderBar>
   );
 };
 
