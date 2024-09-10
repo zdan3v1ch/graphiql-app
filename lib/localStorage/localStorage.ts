@@ -12,7 +12,10 @@ export class Store {
     newHistory.push(url);
     localStorage.setItem(localStorageKey, JSON.stringify(newHistory));
   }
-  static getRequests(userEmail = '') {
+  static getRequests(userEmail?: string | null) {
+    if (!userEmail) {
+      userEmail = '';
+    }
     return JSON.parse(
       localStorage.getItem(userEmail.concat(HISTORY_REQUEST)) ?? '[]'
     ) as string[];

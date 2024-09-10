@@ -8,7 +8,7 @@ import { Box, Typography, useMediaQuery } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
 import { useTheme } from '@mui/material/styles';
-
+import { Session } from 'next-auth';
 import { useLazyGetRestfulApiResponseQuery } from '@/lib/services/apiResponse';
 
 import useGetAllSearchParams from '@/app/[lng]/hooks/useGetAllSearchParams';
@@ -23,18 +23,15 @@ import { validateRequestData, variableSubstitute } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 import { Store } from '@/lib/localStorage/localStorage';
-import { TSessionContextValue } from '@/auth/SessionDataProvider/SessionDataProvider';
-import { useSessionData } from '@/auth/SessionDataProvider/useSessionData';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 
-export function RestClient() {
+export function RestClient({ session }: { session: Session | null }) {
   const theme = useTheme();
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
   const { t, i18n } = useTranslation(Namespaces.CLIENTS);
   const pathname = usePathname();
   const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
   const searchParamsString = useGetAllSearchParams();
-  const sessionContent: TSessionContextValue = useSessionData();
   const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
 
   const requestData = parseRestfulClientUrl(clientUrl.slice(1));
@@ -125,7 +122,7 @@ export function RestClient() {
 
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
-          Store.addRequest(delocalizedUrl, sessionContent.data?.user?.email);
+          Store.addRequest(delocalizedUrl, session?.user?.email);
           await getApiResponse(JSON.stringify(delocalizedUrl.slice(1))).catch(
             () => console.error(t('responseError'))
           );
