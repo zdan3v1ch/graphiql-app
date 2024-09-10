@@ -49,7 +49,10 @@ export default async function RootLayout({
                 <CssBaseline />
                 <Header language={language} />
                 <Container>
-                  <main className="flex" style={{ paddingBlock: '2rem' }}>
+                  <main
+                    className="flex"
+                    style={{ paddingBlock: '2rem', marginTop: '5rem' }}
+                  >
                     {children}
                   </main>
                 </Container>
