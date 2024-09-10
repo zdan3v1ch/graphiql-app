@@ -64,8 +64,8 @@ export default function History({ session }: { session: Session | null }) {
             : '';
 
           let newUrl = regex.test(pathname)
-            ? pathname.slice(0, 1 + i18n.language.length + 1)
-            : '/';
+            ? pathname.slice(0, 1 + i18n.language.length)
+            : '';
           newUrl += request;
           return (
             <NavButton
