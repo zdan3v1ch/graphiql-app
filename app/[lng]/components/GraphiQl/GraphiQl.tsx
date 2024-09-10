@@ -3,12 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
-import {
-  Typography,
-  Box,
-  useMediaQuery,
-  TextareaAutosize,
-} from '@mui/material';
+import { GraphQLSchema } from 'graphql';
+import { Typography, Box, useMediaQuery } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
 import { useTheme } from '@mui/material/styles';
@@ -28,6 +24,7 @@ import { parseGraphiQlUrl, removeLocaleFromUrl } from '@/app/utils';
 import { parseGraphqlBody } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
+import QueryEditor from '@/app/[lng]/components/GraphiQl/QueryEditor';
 
 export function GraphiQl() {
   const theme = useTheme();
@@ -62,6 +59,8 @@ export function GraphiQl() {
   );
   const [query, setQuery] = useState<string>(initialQuery);
   const [variables, setVariables] = useState<string>(initialVariables);
+
+  const [schema] = useState<GraphQLSchema | undefined>();
 
   // const [getApiSdl, { data: sdl, isFetching: isSdlFetching }] =
   //   useLazyGetGraphqlApiSdlQuery();
@@ -186,14 +185,7 @@ export function GraphiQl() {
           }}
         />
 
-        <TextareaAutosize
-          title="Query"
-          minRows={2}
-          value={query}
-          onChange={(event) => {
-            setQuery(event.target.value);
-          }}
-        />
+        <QueryEditor query={query} onQueryChange={setQuery} schema={schema} />
 
         <BodyInput
           body={variables}

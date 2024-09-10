@@ -27,6 +27,8 @@
     "@mui/material-nextjs": "^6.0.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "cm6-graphql": "^0.1.1",
+    "codemirror": "^6.0.1",
     "firebase": "^10.13.0",
     "firebase-admin": "^11.11.1",
     "graphql": "^16.9.0",
@@ -63,5 +65,8 @@
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@codemirror/state": "6.2.0"
   }
 }
