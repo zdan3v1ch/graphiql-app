@@ -4,4 +4,5 @@ export enum Namespaces {
   AUTH = 'auth',
   ERRORS = 'errors',
   CLIENTS = 'clients',
+  HISTORY = 'history',
 }

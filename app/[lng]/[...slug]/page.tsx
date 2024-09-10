@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { RestClient } from '../components/RestClient/RestClient';
 
 import { isHttpMethod } from './utils';
+import { auth } from '@/auth';
 
 interface Props {
   params: {
@@ -10,14 +11,14 @@ interface Props {
   };
 }
 
-const Page: React.FC<Props> = ({ params }) => {
+const Page: React.FC<Props> = async ({ params }) => {
   const { slug } = params;
+  const session = await auth();
 
   if (isHttpMethod(slug[0])) {
     return (
       <>
-        <h1>Restful Client</h1>
-        <RestClient />
+        <RestClient session={session} />
       </>
     );
   }

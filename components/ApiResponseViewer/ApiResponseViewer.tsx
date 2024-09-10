@@ -13,6 +13,8 @@ import {
 
 import { DataApiResponse } from '@/app/model';
 import { getResponseStatusColor } from '@/components/ApiResponseViewer/utils';
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   response?: DataApiResponse;
@@ -20,6 +22,8 @@ interface Props {
 }
 
 const ApiResponseViewer: React.FC<Props> = ({ response, loading }) => {
+  const { t } = useTranslation(Namespaces.CLIENTS);
+
   const renderResponseSection = () => {
     if (loading) {
       return (
@@ -30,7 +34,7 @@ const ApiResponseViewer: React.FC<Props> = ({ response, loading }) => {
     }
 
     if (!response) {
-      return <div>Send your first request to see the response</div>;
+      return <div>{t('emptyResponse')}</div>;
     }
 
     const { status, data } = response;
@@ -61,9 +65,9 @@ const ApiResponseViewer: React.FC<Props> = ({ response, loading }) => {
       <Paper variant="outlined">
         <Stack>
           <Box display="flex" justifyContent="space-between" paddingInline={1}>
-            <div>Body:</div>
+            <div>{t('responseBody')}:</div>
             <Box color={getResponseStatusColor(status)}>
-              Status: {response.status}
+              {t('status')}: {response.status}
             </Box>
           </Box>
           <Divider />
@@ -78,7 +82,7 @@ const ApiResponseViewer: React.FC<Props> = ({ response, loading }) => {
   return (
     <Stack spacing={2}>
       <Typography component="h2" variant="h5">
-        API Response
+        {t('response')}
       </Typography>
       {renderResponseSection()}
     </Stack>
