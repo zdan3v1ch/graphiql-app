@@ -21,7 +21,7 @@ const Page: React.FC<Props> = async ({ params }) => {
   }
 
   if (slug[0].toUpperCase() === 'GRAPHQL') {
-    return <GraphiQl />;
+    return <GraphiQl session={session} />;
   }
 
   notFound();

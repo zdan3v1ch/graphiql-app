@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
+import { Session } from 'next-auth';
 import { buildClientSchema, GraphQLSchema } from 'graphql';
 import { Typography, Box, useMediaQuery } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -10,12 +11,12 @@ import SendIcon from '@mui/icons-material/Send';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useTheme } from '@mui/material/styles';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import {
   useLazyGetGraphqlApiResponseQuery,
   useLazyGetGraphqlApiSdlQuery,
 } from '@/lib/services/apiResponse';
+import { Store } from '@/lib/localStorage/localStorage';
 
 import useGetAllSearchParams from '../../hooks/useGetAllSearchParams';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
@@ -36,7 +37,7 @@ import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 import { rtkQueryErrorSchema } from '@/app/model';
 
-export function GraphiQl() {
+export function GraphiQl({ session }: { session: Session | null }) {
   const theme = useTheme();
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
   const { t, i18n } = useTranslation([Namespaces.CLIENTS, Namespaces.GRAPHQL]);
@@ -57,7 +58,7 @@ export function GraphiQl() {
   if (parsedBodyString) {
     const bodyJson = parseGraphqlBody(parsedBodyString);
     initialQuery = bodyJson.query;
-    initialVariables = bodyJson.variables;
+    initialVariables = JSON.stringify(bodyJson.variables);
   }
 
   const [endpointUrl, setEndpointUrl] = useState<string>(
@@ -175,6 +176,7 @@ export function GraphiQl() {
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
 
+          Store.addRequest(delocalizedUrl, session?.user?.email);
           await getApiResponse(JSON.stringify(delocalizedUrl.slice(1))).catch(
             () => console.error('Failed to fetch data')
           );
@@ -204,7 +206,7 @@ export function GraphiQl() {
             loadingPosition="end"
             sx={{ flexShrink: 0 }}
           >
-            Send
+            {t('send')}
           </LoadingButton>
         </Box>
 
@@ -233,7 +235,7 @@ export function GraphiQl() {
               );
             }}
           >
-            Load
+            {t('load')}
           </LoadingButton>
         </Box>
 

@@ -37,6 +37,9 @@ export default async function RootLayout({
   const { resources } = await initI18n({ language, namespaces });
   return (
     <html lang={language} dir={dir(language)}>
+      <head>
+        <link rel="icon" href="/favicon.png" sizes="any" />
+      </head>
       <StoreProvider>
         <ThemeProvider theme={theme}>
           <AppRouterCacheProvider>
