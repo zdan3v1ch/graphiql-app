@@ -115,6 +115,8 @@ export function RestClient({ session }: { session: Session | null }) {
   };
   return (
     <div className="flow">
+      <Typography variant="h1">{t('restClient')}</Typography>
+
       <form
         className="flow"
         onSubmit={async (event) => {
@@ -128,8 +130,7 @@ export function RestClient({ session }: { session: Session | null }) {
           );
         }}
       >
-        <Typography variant="h1">{t('restClient')}</Typography>
-        <Typography>{t('requestPrompt')}</Typography>
+        <div>{t('requestPrompt')}</div>
         <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
           <HttpMethodSelector
             method={method}
@@ -165,7 +166,12 @@ export function RestClient({ session }: { session: Session | null }) {
             setHeaders(newHeaders);
           }}
         />
-        <BodyInput body={bodyForInput} onBodyChange={onBodyChange} namespace={true} />
+        <BodyInput
+          body={bodyForInput}
+          onBodyChange={onBodyChange}
+          title={t('body')}
+          prompt={t('bodyPrompt')}
+        />
         <TextVariablesInput
           title="variables"
           disabled={isFetching}

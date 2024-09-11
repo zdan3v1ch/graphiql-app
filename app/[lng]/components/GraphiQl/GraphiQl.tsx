@@ -19,17 +19,18 @@ import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
 import TextVariablesInput from '@/components/TextVariablesInput/TextVariablesInput';
 import BodyInput from '@/components/BodyInput/BodyInput';
 import ApiResponseViewer from '@/components/ApiResponseViewer/ApiResponseViewer';
+import GraphqlQueryInput from './components/GraphqlQueryInput';
 
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import { parseGraphiQlUrl, removeLocaleFromUrl } from '@/app/utils';
 import { parseGraphqlBody } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
-import QueryEditor from '@/app/[lng]/components/GraphiQl/QueryEditor';
 
 export function GraphiQl() {
   const theme = useTheme();
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation([Namespaces.CLIENTS, Namespaces.GRAPHQL]);
   const pathname = usePathname();
   const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
   const searchParamsString = useGetAllSearchParams();
@@ -117,6 +118,8 @@ export function GraphiQl() {
 
   return (
     <div className="flow">
+      <Typography variant="h1">{t('graphiQl')}</Typography>
+
       <form
         className="flow"
         onSubmit={async (event) => {
@@ -130,7 +133,7 @@ export function GraphiQl() {
           );
         }}
       >
-        <Typography>Set up your request to a GraphQL API</Typography>
+        <Typography>{t('queryPrompt')}</Typography>
         <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
           <EndpointUrlInput
             endpointUrl={endpointUrl}
@@ -185,13 +188,17 @@ export function GraphiQl() {
           }}
         />
 
-        <QueryEditor query={query} onQueryChange={setQuery} schema={schema} />
+        <GraphqlQueryInput
+          query={query}
+          onQueryChange={setQuery}
+          schema={schema}
+        />
 
         <BodyInput
           body={variables}
           onBodyChange={setVariables}
-          namespace={false}
-          variable={true}
+          title={t('variablesGraphql', { ns: Namespaces.GRAPHQL })}
+          prompt={t('variablesGraphqlPrompt', { ns: Namespaces.GRAPHQL })}
         />
       </form>
       <ApiResponseViewer response={data} loading={isFetching} />

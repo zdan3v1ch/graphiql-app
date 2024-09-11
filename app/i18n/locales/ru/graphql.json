@@ -9,8 +9,9 @@
   "addHeadersGraphql": "Добавить заголовки",
   "headerKeyGraphql": "Ключ заголовка",
   "headerValueGraphql": "Значение заголовка",
-  "queryGraphql": "Query",
-  "variablesGraphql": "Переменные",
+  "queryGraphql": "Query строка",
+  "variablesGraphql": "Переменные GraphQL",
+  "variablesGraphqlPrompt": "Напишите переменные GraphQL, соблюдая синтаксис JSON",
   "statusGraphql": "Статус",
   "bodyGraphql": "Тело",
   "sendRequestGraphql": "Отправить запрос"

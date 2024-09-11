@@ -17,20 +17,11 @@ const Page: React.FC<Props> = async ({ params }) => {
   const session = await auth();
 
   if (isHttpMethod(slug[0].toUpperCase())) {
-    return (
-      <>
-        <RestClient session={session} />
-      </>
-    );
+    return <RestClient session={session} />;
   }
 
   if (slug[0].toUpperCase() === 'GRAPHQL') {
-    return (
-      <>
-        <h1>GraphiQL</h1>
-        <GraphiQl />
-      </>
-    );
+    return <GraphiQl />;
   }
 
   notFound();

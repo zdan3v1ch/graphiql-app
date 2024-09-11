@@ -9,8 +9,9 @@
   "addHeadersGraphql": "Add headers",
   "headerKeyGraphql": "Header Key",
   "headerValueGraphql": "Header Value",
-  "queryGraphql": "Query",
-  "variablesGraphql": "Variables",
+  "queryGraphql": "Query string",
+  "variablesGraphql": "GraphQL variables",
+  "variablesGraphqlPrompt": "Write the GraphQL variable following the JSON syntax",
   "statusGraphql": "Status",
   "bodyGraphql": "Body",
   "sendRequestGraphql": "Send request"
