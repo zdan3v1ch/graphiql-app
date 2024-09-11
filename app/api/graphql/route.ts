@@ -10,6 +10,14 @@ export async function GET(
 ): Promise<NextResponse<GraphqlSdlResponse>> {
   const introspectionQuery = getIntrospectionQuery();
   const sdlUrl = request.nextUrl.searchParams.get('sdlUrl');
+
+  if (!sdlUrl) {
+    return NextResponse.json(
+      { error: 'SDL schema URL is required' },
+      { status: 400 }
+    );
+  }
+
   const { data: graphqlSdlUrl, error: validationError } = z
     .string()
     .min(1)
