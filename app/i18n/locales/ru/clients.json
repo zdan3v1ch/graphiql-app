@@ -1,5 +1,6 @@
 {
   "restClient": "RESTfull-клиент",
+  "endpointUrlLabel": "URL эндпоинта",
   "graphiQl": "GraphiQL-клиент",
   "headers": "Заголовки",
   "headersAdd": "Добавить заголовок",
@@ -8,6 +9,7 @@
   "body": "Тело в формате JSON",
   "bodyPrompt": "Напишите тело запроса, соблюдая синтаксис JSON",
   "send": "Отправить",
+  "load": "Загрузить",
   "requestPrompt": "Настройте свой запрос к RESTful API",
   "queryPrompt": "Настройте свой запрос к GraphQL API",
   "response": "API ответ",
