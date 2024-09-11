@@ -17,6 +17,7 @@ const config: Config = {
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: false,
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
     // Handle CSS imports (with CSS modules)
     // https://jestjs.io/docs/webpack#mocking-css-modules
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
@@ -43,7 +44,7 @@ const config: Config = {
   },
   resetMocks: false,
   coverageProvider: 'v8',
-  collectCoverageFrom: ['app/**'],
+  collectCoverageFrom: ['app/**', 'auth/**', 'components/**', 'lib/**'],
   coveragePathIgnorePatterns: ['types\\.ts$'],
 };
 
