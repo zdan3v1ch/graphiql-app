@@ -1,6 +1,6 @@
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { useTranslation } from 'react-i18next';
-import { docco as htmlViewerStyle } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { docco as htmlViewerStyle } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import {
   Box,
   CircularProgress,
