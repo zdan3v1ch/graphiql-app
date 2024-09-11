@@ -3,12 +3,13 @@ import { GraphQLSchema } from 'graphql';
 import { graphql } from 'cm6-graphql';
 
 import styles from './GraphqlQueryEditor.module.css';
+import { useEffect, useState } from 'react';
 
 interface Props {
   value: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
+  changeValueOnBlur?: boolean;
   schema?: GraphQLSchema;
-  onBlur?: (event: React.FocusEvent) => void;
   height?: string;
   maxHeight?: string;
 }
@@ -16,21 +17,33 @@ interface Props {
 const JsonEditor: React.FC<Props> = ({
   value,
   onChange,
+  changeValueOnBlur,
   schema,
-  onBlur,
   height,
   maxHeight,
 }) => {
+  const [editorValue, setEditorValue] = useState<string>(value);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [schema]);
+
   return (
     <div className={styles.editorContainer}>
       <CodeMirror
+        key={key}
         className={styles.editor}
         value={value}
         height={height}
         maxHeight={maxHeight}
         extensions={[graphql(schema)]}
-        onChange={onChange}
-        onBlur={onBlur}
+        onChange={(value) => {
+          changeValueOnBlur ? setEditorValue(value) : onChange(value);
+        }}
+        onBlur={() => {
+          changeValueOnBlur && onChange(editorValue);
+        }}
       />
     </div>
   );
