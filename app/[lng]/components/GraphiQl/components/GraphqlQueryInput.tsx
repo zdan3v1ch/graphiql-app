@@ -42,6 +42,7 @@ const GraphqlQueryInput: React.FC<Props> = ({
         <GraphqlQueryEditor
           value={query}
           onChange={onQueryChange}
+          changeValueOnBlur
           schema={schema}
           height="350px"
         />

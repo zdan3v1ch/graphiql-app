@@ -56,7 +56,7 @@ export function RestClient({ session }: { session: Session | null }) {
     validParsedBody ?? ''
   );
 
-  const [getApiResponse, { data, isFetching }] =
+  const [getApiResponse, { data, isFetching, error }] =
     useLazyGetRestfulApiResponseQuery();
 
   useEffect(() => {
