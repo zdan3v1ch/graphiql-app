@@ -148,7 +148,9 @@ export function GraphiQl() {
 
       toast.error(message);
     }
+  }, [error]);
 
+  useEffect(() => {
     if (sdlError) {
       const { data: rtkQueryError } = rtkQueryErrorSchema.safeParse(sdlError);
       const errorMessage = rtkQueryError
@@ -159,7 +161,7 @@ export function GraphiQl() {
 
       toast.error(message);
     }
-  }, [error, sdlError]);
+  }, [sdlError]);
 
   return (
     <div className="flow">
