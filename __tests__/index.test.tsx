@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import Home from '../app/[lng]/page';
+import Footer from '@/app/[lng]/components/Footer/Footer';
 
 describe('Home', () => {
   it.skip('renders content text', () => {
-    render(<Home />);
+    render(<Footer />);
 
-    const heading = screen.getByText('Main content');
+    const heading = screen.getByText(2024);
 
     expect(heading).toBeInTheDocument();
   });

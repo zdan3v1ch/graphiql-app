@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getIntrospectionQuery } from 'graphql';
 import z from 'zod';
 
-import { parseGraphqlClientUrl } from '@/app/utils';
+import { parseGraphiQlUrl } from '@/app/utils';
 import { ApiResponse, GraphqlSdlResponse } from '@/app/model';
 
 export async function GET(
@@ -56,7 +56,7 @@ export async function POST(
   request: NextRequest
 ): Promise<NextResponse<ApiResponse>> {
   const clientRequestBody: unknown = await request.json();
-  const { data: restfulClientUrl, error: validationError } = z
+  const { data: graphiqlUrl, error: validationError } = z
     .string()
     .min(1)
     .safeParse(clientRequestBody);
@@ -68,8 +68,7 @@ export async function POST(
     );
   }
 
-  const { endpointUrl, headers, body } =
-    parseGraphqlClientUrl(restfulClientUrl);
+  const { endpointUrl, headers, body } = parseGraphiQlUrl(graphiqlUrl);
 
   if (!endpointUrl) {
     return NextResponse.json(
@@ -82,7 +81,7 @@ export async function POST(
     const graphqlResponse = await fetch(endpointUrl, {
       method: 'POST',
       headers: { ...headers, 'Content-type': 'application/json' },
-      body: body ? JSON.stringify(body) : undefined,
+      body,
     });
 
     const responseContentType = graphqlResponse.headers.get('content-type');

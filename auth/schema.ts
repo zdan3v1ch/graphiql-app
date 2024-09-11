@@ -5,4 +5,8 @@ export const signInSchema = z.object({
   password: z.string().min(1, 'Password is required'),
 });
 
+export const graphqlSchema = z.object({
+  endpoint: z.string().min(1, 'Endpoint is required'),
+});
+
 export type SignInData = z.infer<typeof signInSchema>;

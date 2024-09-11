@@ -1,7 +1,6 @@
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import { useTranslation } from 'react-i18next';
 import { docco as htmlViewerStyle } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import JsonEditor from '@/components/JsonEditor/JsonEditor';
-import { Mode } from 'vanilla-jsoneditor';
 import {
   Box,
   CircularProgress,
@@ -11,10 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { DataApiResponse } from '@/app/model';
-import { getResponseStatusColor } from '@/components/ApiResponseViewer/utils';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
-import { useTranslation } from 'react-i18next';
+import { DataApiResponse } from '@/app/model';
+import { getResponseStatusColor } from './utils';
+
+import JsonEditor from '@/components/JsonEditor/JsonEditor';
 
 interface Props {
   response?: DataApiResponse;
@@ -53,10 +53,9 @@ const ApiResponseViewer: React.FC<Props> = ({ response, loading }) => {
 
       return (
         <JsonEditor
-          mode={Mode.text}
-          content={{ json: data }}
+          value={JSON.stringify(data, null, 2)}
+          maxHeight="75vh"
           readOnly
-          mainMenuBar={false}
         />
       );
     };

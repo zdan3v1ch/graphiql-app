@@ -3,61 +3,70 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
-import { HTTP_METHOD } from 'next/dist/server/web/http';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { GraphQLSchema } from 'graphql';
+import { Typography, Box, useMediaQuery } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
 import { useTheme } from '@mui/material/styles';
-import { Session } from 'next-auth';
-import { useLazyGetRestfulApiResponseQuery } from '@/lib/services/apiResponse';
 
-import useGetAllSearchParams from '@/app/[lng]/hooks/useGetAllSearchParams';
-import HttpMethodSelector from '@/components/HttpMethodSelector/HttpMethodSelector';
+import {
+  useLazyGetGraphqlApiResponseQuery,
+  // useLazyGetGraphqlApiSdlQuery,
+} from '@/lib/services/apiResponse';
+
+import useGetAllSearchParams from '../../hooks/useGetAllSearchParams';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
 import TextVariablesInput from '@/components/TextVariablesInput/TextVariablesInput';
 import BodyInput from '@/components/BodyInput/BodyInput';
 import ApiResponseViewer from '@/components/ApiResponseViewer/ApiResponseViewer';
+import GraphqlQueryInput from './components/GraphqlQueryInput';
 
-import { parseRestfulClientUrl, removeLocaleFromUrl } from '@/app/utils';
-import { validateRequestData, variableSubstitute } from './utils';
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
+import { parseGraphiQlUrl, removeLocaleFromUrl } from '@/app/utils';
+import { parseGraphqlBody } from './utils';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
-import { Store } from '@/lib/localStorage/localStorage';
-import { Namespaces } from '@/app/i18n/data/i18n.enum';
 
-export function RestClient({ session }: { session: Session | null }) {
+export function GraphiQl() {
   const theme = useTheme();
   const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const { t, i18n } = useTranslation(Namespaces.CLIENTS);
+  const { t, i18n } = useTranslation([Namespaces.CLIENTS, Namespaces.GRAPHQL]);
   const pathname = usePathname();
   const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
   const searchParamsString = useGetAllSearchParams();
   const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
 
-  const requestData = parseRestfulClientUrl(clientUrl.slice(1));
-
   const {
-    validParsedMethod,
-    validParsedEndpointUrl,
-    validParsedHeaders,
-    validParsedBody,
-  } = validateRequestData(requestData);
+    endpointUrl: parsedEndpointUrl,
+    headers: parsedHeaders,
+    body: parsedBodyString,
+  } = parseGraphiQlUrl(clientUrl.slice(1));
 
-  const [method, setMethod] = useState<HTTP_METHOD>(validParsedMethod ?? 'GET');
+  let initialQuery = '';
+  let initialVariables = '';
+
+  if (parsedBodyString) {
+    const bodyJson = parseGraphqlBody(parsedBodyString);
+    initialQuery = bodyJson.query;
+    initialVariables = bodyJson.variables;
+  }
+
   const [endpointUrl, setEndpointUrl] = useState<string>(
-    validParsedEndpointUrl ?? ''
+    parsedEndpointUrl ?? ''
   );
+  const [sdlUrl, setSdlUrl] = useState<string>(parsedEndpointUrl ?? '');
   const [headers, setHeaders] = useState<[string, string][]>(
-    validParsedHeaders ? Object.entries(validParsedHeaders) : []
+    parsedHeaders ? Object.entries(parsedHeaders) : []
   );
-  const [variables, setVariables] = useState<[string, string][]>([]);
-  const [bodyForUrl, setBodyForUrl] = useState<string>(validParsedBody ?? '');
-  const [bodyForInput, setBodyForInput] = useState<string>(
-    validParsedBody ?? ''
-  );
+  const [query, setQuery] = useState<string>(initialQuery);
+  const [variables, setVariables] = useState<string>(initialVariables);
 
+  const [schema] = useState<GraphQLSchema | undefined>();
+
+  // const [getApiSdl, { data: sdl, isFetching: isSdlFetching }] =
+  //   useLazyGetGraphqlApiSdlQuery();
   const [getApiResponse, { data, isFetching }] =
-    useLazyGetRestfulApiResponseQuery();
+    useLazyGetGraphqlApiResponseQuery();
 
   useEffect(() => {
     const localePattern = locales.join('|');
@@ -67,20 +76,29 @@ export function RestClient({ session }: { session: Session | null }) {
     let newUrl = regex.test(pathname)
       ? pathname.slice(0, 1 + i18n.language.length + 1) // if yes then add locale and slashes after and before it to the new url
       : '/';
-    newUrl += method;
+
+    newUrl += 'GRAPHQL/';
 
     if (endpointUrl) {
-      newUrl += `/${window.btoa(encodeURI(endpointUrl))}`;
-    } else {
-      newUrl += '/';
+      newUrl += `${window.btoa(endpointUrl)}`;
     }
 
-    if (bodyForUrl) {
+    if (query || variables) {
+      const body: { query?: string; variables?: unknown } = {};
+
+      if (query) {
+        body.query = query;
+      }
+
+      if (variables) {
+        body.variables = JSON.parse(variables);
+      }
+
       if (!endpointUrl) {
         newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
       }
 
-      newUrl += `/${window.btoa(encodeURI(bodyForUrl))}`;
+      newUrl += `/${window.btoa(JSON.stringify(body))}`;
     }
 
     if (headers.length) {
@@ -96,26 +114,11 @@ export function RestClient({ session }: { session: Session | null }) {
     }
 
     history.pushState(null, '', newUrl);
-  }, [
-    method,
-    endpointUrl,
-    headers,
-    pathname,
-    i18n.language.length,
-    bodyForUrl,
-  ]);
+  }, [endpointUrl, headers, pathname, i18n.language.length, query, variables]);
 
-  const onBodyChange = (newBody: string) => {
-    setBodyForInput(newBody);
-    setBodyForUrl(variableSubstitute(newBody, variables));
-  };
-  const onVariablesChange = (newVariables: [string, string][]) => {
-    setVariables(newVariables);
-    setBodyForUrl(variableSubstitute(bodyForInput, variables));
-  };
   return (
     <div className="flow">
-      <Typography variant="h1">{t('restClient')}</Typography>
+      <Typography variant="h1">{t('graphiQl')}</Typography>
 
       <form
         className="flow"
@@ -124,25 +127,19 @@ export function RestClient({ session }: { session: Session | null }) {
 
           const url = `${window.location.pathname}${window.location.search}`;
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
-          Store.addRequest(delocalizedUrl, session?.user?.email);
+
           await getApiResponse(JSON.stringify(delocalizedUrl.slice(1))).catch(
-            () => console.error(t('responseError'))
+            () => console.error('Failed to fetch data')
           );
         }}
       >
-        <div>{t('requestPrompt')}</div>
+        <Typography>{t('queryPrompt')}</Typography>
         <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
-          <HttpMethodSelector
-            method={method}
-            onMethodChange={(newMethod) => {
-              setMethod(newMethod);
-            }}
-            selectProps={{ disabled: isFetching }}
-          />
           <EndpointUrlInput
             endpointUrl={endpointUrl}
             onEndpointUrlChange={(newEndpointUrl) => {
               setEndpointUrl(newEndpointUrl);
+              setSdlUrl(`${newEndpointUrl}?sdl`);
             }}
             textFieldProps={{ fullWidth: true, disabled: isFetching }}
           />
@@ -155,9 +152,33 @@ export function RestClient({ session }: { session: Session | null }) {
             loadingPosition="end"
             sx={{ flexShrink: 0 }}
           >
-            {t('send')}
+            Send
           </LoadingButton>
         </Box>
+
+        <Box display="flex" flexDirection={upSm ? 'row' : 'column'} gap={2}>
+          <EndpointUrlInput
+            endpointUrl={sdlUrl}
+            onEndpointUrlChange={(newSdlUrl) => {
+              setSdlUrl(
+                newSdlUrl.endsWith('?sdl') ? newSdlUrl : `${newSdlUrl}?sdl`
+              );
+            }}
+            textFieldProps={{ fullWidth: true, disabled: isFetching }}
+          />
+          <LoadingButton
+            type="button"
+            variant="contained"
+            color="primary"
+            endIcon={<SendIcon />}
+            loading={isFetching}
+            loadingPosition="end"
+            sx={{ flexShrink: 0 }}
+          >
+            Send
+          </LoadingButton>
+        </Box>
+
         <TextVariablesInput
           title="headers"
           disabled={isFetching}
@@ -166,17 +187,18 @@ export function RestClient({ session }: { session: Session | null }) {
             setHeaders(newHeaders);
           }}
         />
-        <BodyInput
-          body={bodyForInput}
-          onBodyChange={onBodyChange}
-          title={t('body')}
-          prompt={t('bodyPrompt')}
+
+        <GraphqlQueryInput
+          query={query}
+          onQueryChange={setQuery}
+          schema={schema}
         />
-        <TextVariablesInput
-          title="variables"
-          disabled={isFetching}
-          variables={variables}
-          onVariablesChange={onVariablesChange}
+
+        <BodyInput
+          body={variables}
+          onBodyChange={setVariables}
+          title={t('variablesGraphql', { ns: Namespaces.GRAPHQL })}
+          prompt={t('variablesGraphqlPrompt', { ns: Namespaces.GRAPHQL })}
         />
       </form>
       <ApiResponseViewer response={data} loading={isFetching} />

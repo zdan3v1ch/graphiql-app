@@ -1,5 +1,4 @@
 import { EMPTY_ENDPOINT_URL_SYMBOL } from './constants';
-import z from 'zod';
 
 export function removeLocaleFromUrl(path: string, locales: string[]): string {
   const localePattern = locales.join('|');
@@ -16,22 +15,18 @@ export function removeLocaleFromUrl(path: string, locales: string[]): string {
 interface ApiRequestData {
   endpointUrl?: string;
   headers?: Record<string, string>;
+  body?: string;
 }
 
 export interface RestfulRequestData extends ApiRequestData {
   method: string;
-  body?: string;
 }
 
-export interface GraphqlRequestData extends ApiRequestData {
-  body?: {
-    query: string;
-    variables: Record<string, string>;
-  };
-}
+export type GraphqlRequestData = ApiRequestData;
 
 function getApiRequestData(
   base64EncodedEndpointUrl?: string,
+  base64EncodedBody?: string,
   queryString?: string
 ) {
   const apiRequestData: ApiRequestData = {};
@@ -42,6 +37,12 @@ function getApiRequestData(
   ) {
     apiRequestData.endpointUrl = decodeURI(
       Buffer.from(base64EncodedEndpointUrl, 'base64').toString('utf-8')
+    );
+  }
+
+  if (base64EncodedBody) {
+    apiRequestData.body = decodeURI(
+      Buffer.from(base64EncodedBody, 'base64').toString('utf-8')
     );
   }
 
@@ -69,43 +70,23 @@ export function parseRestfulClientUrl(url: string): RestfulRequestData {
     mainPart.split('/');
   const apiRequestData = getApiRequestData(
     base64EncodedEndpointUrl,
+    base64EncodedBody,
     queryString
   );
-  const restfulRequestData: RestfulRequestData = { method, ...apiRequestData };
 
-  if (base64EncodedBody) {
-    restfulRequestData.body = decodeURI(
-      Buffer.from(base64EncodedBody, 'base64').toString('utf-8')
-    );
-  }
-
-  return restfulRequestData;
+  return {
+    method: method.toUpperCase(),
+    ...apiRequestData,
+  };
 }
 
-export function parseGraphqlClientUrl(url: string): GraphqlRequestData {
+export function parseGraphiQlUrl(url: string): GraphqlRequestData {
   const [mainPart, queryString] = url.split('?');
-  const [base64EncodedEndpointUrl, base64EncodedBody] = mainPart.split('/');
-  const apiRequestData = getApiRequestData(
+  const [_, base64EncodedEndpointUrl, base64EncodedBody] = mainPart.split('/');
+
+  return getApiRequestData(
     base64EncodedEndpointUrl,
+    base64EncodedBody,
     queryString
   );
-  const graphqlRequestData: GraphqlRequestData = { ...apiRequestData };
-
-  if (base64EncodedBody) {
-    const body = decodeURI(
-      Buffer.from(base64EncodedBody, 'base64').toString('utf-8')
-    );
-    const { data: validBody, success } = z
-      .object({
-        query: z.string(),
-        variables: z.record(z.string(), z.string()),
-      })
-      .safeParse(body);
-
-    if (success) {
-      graphqlRequestData.body = validBody;
-    }
-  }
-
-  return graphqlRequestData;
 }
