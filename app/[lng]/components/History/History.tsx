@@ -1,19 +1,22 @@
 'use client';
-import { usePathname } from 'next/navigation';
-import { Box, Typography } from '@mui/material';
+
+import { useEffect, useState } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import { Store } from '@/lib/localStorage/localStorage';
 import { protectedNavButtonParams } from '@/app/[lng]/components/Header/constants';
 import NavButton from '@/components/NavButton';
-import { locales } from '@/app/i18n/data/i18n.constants';
 import { Session } from 'next-auth';
 
 export default function History({ session }: { session: Session | null }) {
-  const { t, i18n } = useTranslation(Namespaces.HISTORY);
-  const pathname = usePathname();
-  const requests = Store.getRequests(session?.user?.email);
+  const { t } = useTranslation(Namespaces.HISTORY);
+  const [requests, setRequests] = useState<string[]>([]);
+
+  useEffect(() => {
+    setRequests(Store.getRequests(session?.user?.email).reverse());
+  }, [session?.user?.email]);
 
   if (!requests.length) {
     return (
@@ -38,17 +41,15 @@ export default function History({ session }: { session: Session | null }) {
     );
   }
   return (
-    <>
-      <Typography variant="h4">{t('history')}</Typography>
+    <Stack className="flow">
+      <Typography variant="h1">{t('history')}</Typography>
       <Box
         display="flex"
         flexDirection="column"
         alignItems="flex-start"
-        gap={2}
+        gap={1}
       >
-        {requests.map((request) => {
-          const localePattern = locales.join('|');
-          const regex = new RegExp(`^/(${localePattern})/(.*)`);
+        {requests.map((request, index) => {
           const mainPart = request.split('?')[0] ?? '';
           let [method, base64EncodedEndpointUrl] = ['', ''];
           mainPart.startsWith('/')
@@ -63,15 +64,11 @@ export default function History({ session }: { session: Session | null }) {
               )
             : '';
 
-          let newUrl = regex.test(pathname)
-            ? pathname.slice(0, 1 + i18n.language.length)
-            : '';
-          newUrl += request;
           return (
             <NavButton
-              key={request}
+              key={`${request}${index}`}
               label={`${method} ${endpointUrl}`}
-              url={newUrl}
+              url={request}
               buttonProps={{
                 variant: 'text',
                 color: 'primary',
@@ -80,6 +77,6 @@ export default function History({ session }: { session: Session | null }) {
           );
         })}
       </Box>
-    </>
+    </Stack>
   );
 }

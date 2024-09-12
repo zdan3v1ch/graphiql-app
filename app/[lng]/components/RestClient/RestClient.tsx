@@ -9,6 +9,8 @@ import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
 import { useTheme } from '@mui/material/styles';
 import { Session } from 'next-auth';
+import { toast, ToastContainer } from 'react-toastify';
+
 import { useLazyGetRestfulApiResponseQuery } from '@/lib/services/apiResponse';
 
 import useGetAllSearchParams from '@/app/[lng]/hooks/useGetAllSearchParams';
@@ -24,6 +26,7 @@ import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 import { Store } from '@/lib/localStorage/localStorage';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
+import { rtkQueryErrorSchema } from '@/app/model';
 
 export function RestClient({ session }: { session: Session | null }) {
   const theme = useTheme();
@@ -56,7 +59,7 @@ export function RestClient({ session }: { session: Session | null }) {
     validParsedBody ?? ''
   );
 
-  const [getApiResponse, { data, isFetching }] =
+  const [getApiResponse, { data, isFetching, error }] =
     useLazyGetRestfulApiResponseQuery();
 
   useEffect(() => {
@@ -113,6 +116,20 @@ export function RestClient({ session }: { session: Session | null }) {
     setVariables(newVariables);
     setBodyForUrl(variableSubstitute(bodyForInput, variables));
   };
+
+  useEffect(() => {
+    if (error) {
+      const { data: rtkQueryError } = rtkQueryErrorSchema.safeParse(error);
+      const errorMessage = rtkQueryError
+        ? rtkQueryError.data.error
+        : 'Unexpected error';
+      const status = rtkQueryError ? rtkQueryError.status : 'Unknown status';
+      const message = `${status}: ${errorMessage}`;
+
+      toast.error(message);
+    }
+  }, [error]);
+
   return (
     <div className="flow">
       <Typography variant="h1">{t('restClient')}</Typography>
@@ -144,7 +161,11 @@ export function RestClient({ session }: { session: Session | null }) {
             onEndpointUrlChange={(newEndpointUrl) => {
               setEndpointUrl(newEndpointUrl);
             }}
-            textFieldProps={{ fullWidth: true, disabled: isFetching }}
+            textFieldProps={{
+              fullWidth: true,
+              disabled: isFetching,
+              label: t('endpointUrlLabel'),
+            }}
           />
           <LoadingButton
             type="submit"
@@ -180,6 +201,12 @@ export function RestClient({ session }: { session: Session | null }) {
         />
       </form>
       <ApiResponseViewer response={data} loading={isFetching} />
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={true}
+        position="top-center"
+        theme="colored"
+      />
     </div>
   );
 }

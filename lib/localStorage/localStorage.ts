@@ -1,3 +1,5 @@
+'use client';
+
 import { HISTORY_REQUEST } from '@/lib/localStorage/localStorage.constants';
 
 export class Store {

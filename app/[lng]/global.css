@@ -1,3 +1,5 @@
+@import '~react-toastify/dist/ReactToastify.min.css';
+
 :root {
   --flow-spacer: 2.4rem;
 }

@@ -90,3 +90,12 @@ export function parseGraphiQlUrl(url: string): GraphqlRequestData {
     queryString
   );
 }
+
+export function isValidJsonString(str: string): boolean {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}

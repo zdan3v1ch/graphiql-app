@@ -9,11 +9,19 @@ export async function GET(
   request: NextRequest
 ): Promise<NextResponse<GraphqlSdlResponse>> {
   const introspectionQuery = getIntrospectionQuery();
-  const clientRequestBody: unknown = await request.json();
+  const sdlUrl = request.nextUrl.searchParams.get('sdlUrl');
+
+  if (!sdlUrl) {
+    return NextResponse.json(
+      { error: 'SDL schema URL is required' },
+      { status: 400 }
+    );
+  }
+
   const { data: graphqlSdlUrl, error: validationError } = z
     .string()
     .min(1)
-    .safeParse(clientRequestBody);
+    .safeParse(sdlUrl);
 
   if (validationError) {
     return NextResponse.json(
@@ -40,7 +48,10 @@ export async function GET(
     if (responseContentType?.includes('application/json')) {
       data = await graphqlSdlResponse.json();
     } else {
-      data = await graphqlSdlResponse.text();
+      return NextResponse.json(
+        { error: 'Invalid SDL schema URL' },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json(data);
