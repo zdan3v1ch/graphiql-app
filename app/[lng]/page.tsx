@@ -22,28 +22,95 @@ export default async function Main({ params }: { params: Params }) {
   const { t } = await initI18n({ language, namespaces });
   const ns = Namespaces.HEADER;
 
+  const renderGeneralInfo = () => {
+    return (
+      <>
+        <div>
+          <Typography
+            component="h2"
+            variant="h4"
+            sx={{ padding: '20px', textAlign: 'center' }}
+          >
+            {t('devs')}
+          </Typography>
+          <Box display="flex" gap={2} flexWrap="wrap" justifyContent="center">
+            {developers.map((dev, index) => (
+              <Grid key={index}>
+                <Card sx={{ maxWidth: 300 }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={dev.image}
+                    alt={`${dev.name}'s photo`}
+                  />
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      {dev.name}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary">
+                      {t(dev.role)}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {t(dev.bio)}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Box>
+        </div>
+        <div>
+          <Typography
+            component="h2"
+            variant="h4"
+            sx={{ padding: '20px', textAlign: 'center' }}
+          >
+            {t('project')}
+          </Typography>
+          <Typography textAlign="center">{t('projectDesc')}</Typography>
+        </div>
+        <div>
+          <Typography
+            component="h2"
+            variant="h4"
+            sx={{ padding: '20px', textAlign: 'center' }}
+          >
+            {t('course')}
+          </Typography>
+          <Typography textAlign="center">{t('courseDesc')}</Typography>
+        </div>
+      </>
+    );
+  };
+
   if (!session) {
     return (
       <Container className="flow">
-        <Typography variant="h1" sx={{ padding: '20px', textAlign: 'center' }}>
-          {t('title')}
-        </Typography>
-        <Box display="flex" gap="2rem" justifyContent="center">
-          <NavButton
-            label={t('signIn', { ns })}
-            url="/signin"
-            buttonProps={{
-              variant: 'contained',
-              color: 'primary',
-              sx: { color: 'white' },
-            }}
-          />
-          <NavButton
-            label={t('signUp', { ns })}
-            url="/register"
-            buttonProps={{ variant: 'contained', color: 'secondary' }}
-          />
-        </Box>
+        <div>
+          <Typography
+            variant="h1"
+            sx={{ padding: '20px', textAlign: 'center' }}
+          >
+            {t('title')}
+          </Typography>
+          <Box display="flex" gap="2rem" justifyContent="center">
+            <NavButton
+              label={t('signIn', { ns })}
+              url="/signin"
+              buttonProps={{
+                variant: 'contained',
+                color: 'primary',
+                sx: { color: 'white' },
+              }}
+            />
+            <NavButton
+              label={t('signUp', { ns })}
+              url="/register"
+              buttonProps={{ variant: 'contained', color: 'secondary' }}
+            />
+          </Box>
+        </div>
+        {renderGeneralInfo()}
       </Container>
     );
   }
@@ -75,60 +142,7 @@ export default async function Main({ params }: { params: Params }) {
           ))}
         </Box>
       </div>
-      <div>
-        <Typography
-          component="h2"
-          variant="h4"
-          sx={{ padding: '20px', textAlign: 'center' }}
-        >
-          {t('devs')}
-        </Typography>
-        <Box display="flex" gap={2} flexWrap="wrap" justifyContent="center">
-          {developers.map((dev, index) => (
-            <Grid key={index}>
-              <Card sx={{ maxWidth: 300 }}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={dev.image}
-                  alt={`${dev.name}'s photo`}
-                />
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    {dev.name}
-                  </Typography>
-                  <Typography variant="subtitle1" color="text.secondary">
-                    {t(dev.role)}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {t(dev.bio)}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Box>
-      </div>
-      <div>
-        <Typography
-          component="h2"
-          variant="h4"
-          sx={{ padding: '20px', textAlign: 'center' }}
-        >
-          {t('project')}
-        </Typography>
-        <Typography textAlign="center">{t('projectDesc')}</Typography>
-      </div>
-      <div>
-        <Typography
-          component="h2"
-          variant="h4"
-          sx={{ padding: '20px', textAlign: 'center' }}
-        >
-          {t('course')}
-        </Typography>
-        <Typography textAlign="center">{t('courseDesc')}</Typography>
-      </div>
+      {renderGeneralInfo()}
     </Container>
   );
 }
