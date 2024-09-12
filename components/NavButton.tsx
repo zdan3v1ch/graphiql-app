@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Button, ButtonProps } from '@mui/material';
+import { Button, ButtonProps, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 interface Props {
   label: string;
@@ -12,6 +13,8 @@ interface Props {
 
 const NavButton: React.FC<Props> = ({ label, url, onClick, buttonProps }) => {
   const router = useRouter();
+  const theme = useTheme();
+  const upLg = useMediaQuery(theme.breakpoints.up(1050));
 
   return (
     <Button
@@ -21,6 +24,7 @@ const NavButton: React.FC<Props> = ({ label, url, onClick, buttonProps }) => {
         }
         router.push(url);
       }}
+      style={{ fontSize: upLg ? '0.875rem' : '0.6rem' }}
       {...buttonProps}
     >
       {label}
