@@ -21,24 +21,26 @@ export default function History({ session }: { session: Session | null }) {
 
   if (!requests.length) {
     return (
-      <>
+      <Stack spacing={2}>
         <div>{t('emptyHistory')}</div>
-        {protectedNavButtonParams.map(
-          (params) =>
-            (params.labelHeaderNsKey === 'navRestfulClient' ||
-              params.labelHeaderNsKey === 'navGraphqlClient') && (
-              <NavButton
-                key={`${params.labelHeaderNsKey}${params.url}1`}
-                label={t(params.labelHeaderNsKey, { ns: Namespaces.HEADER })}
-                url={params.url}
-                buttonProps={{
-                  variant: 'contained',
-                  color: 'primary',
-                }}
-              />
-            )
-        )}
-      </>
+        <Box display="flex" gap={2} flexWrap="wrap">
+          {protectedNavButtonParams.map(
+            (params) =>
+              (params.labelHeaderNsKey === 'navRestfulClient' ||
+                params.labelHeaderNsKey === 'navGraphqlClient') && (
+                <NavButton
+                  key={`${params.labelHeaderNsKey}${params.url}1`}
+                  label={t(params.labelHeaderNsKey, { ns: Namespaces.HEADER })}
+                  url={params.url}
+                  buttonProps={{
+                    variant: 'contained',
+                    color: 'primary',
+                  }}
+                />
+              )
+          )}
+        </Box>
+      </Stack>
     );
   }
   return (

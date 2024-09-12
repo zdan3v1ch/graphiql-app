@@ -46,6 +46,16 @@ const Header: React.FC<Props> = async ({ language }) => {
 
     return (
       <>
+        <NavButton
+          key="main"
+          label={t('navMain', { ns })}
+          url="/"
+          buttonProps={{
+            variant: 'text',
+            color: 'inherit',
+            sx: { color: 'white' },
+          }}
+        />
         {protectedNavButtonParams.map((params) => (
           <NavButton
             key={`${params.labelHeaderNsKey}${params.url}`}

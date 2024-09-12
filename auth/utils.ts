@@ -2,5 +2,5 @@
 import { signOut as naSignOut } from '.';
 
 export async function signOut() {
-  await naSignOut();
+  await naSignOut({ redirectTo: '/' });
 }
