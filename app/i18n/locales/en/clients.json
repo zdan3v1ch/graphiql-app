@@ -1,5 +1,6 @@
 {
   "restClient": "RESTfull Client",
+  "endpointUrlLabel": "Endpoint URL",
   "graphiQl": "GraphiQL",
   "headers": "Headers",
   "headersAdd": "Add header",
@@ -8,6 +9,7 @@
   "body": "Body JSON",
   "bodyPrompt": "Write the request body following the JSON syntax",
   "send": "Send",
+  "load": "Load",
   "requestPrompt": "Set up your request to a RESTful API",
   "queryPrompt": "Set up your request to a GraphQL API",
   "response": "API Response",

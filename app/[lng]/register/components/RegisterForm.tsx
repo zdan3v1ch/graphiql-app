@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Container, Button, Typography, Box, Alert } from '@mui/material';
+import { Alert, Box, Container, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { type RegisterData, registerSchema } from '@/lib/firestore/schema';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
@@ -114,7 +115,8 @@ const RegisterForm: React.FC<Props> = ({
             label={t('formLabelConfirmPassword')}
             required
           />
-          <Button
+          <LoadingButton
+            loading={loading}
             type="submit"
             variant="contained"
             color="primary"
@@ -122,7 +124,7 @@ const RegisterForm: React.FC<Props> = ({
             disabled={!isValid || loading}
           >
             {t('buttonLabelSignUp')}
-          </Button>
+          </LoadingButton>
           <Typography marginTop="2rem">
             {t('signUpHintText')}&nbsp;
             <Link href="/signin">{t('signUpHintLinkLabel')}</Link>

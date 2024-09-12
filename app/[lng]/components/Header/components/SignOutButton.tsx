@@ -1,10 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { IconButton } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import { signOut } from '@/auth/utils';
+import { useState } from 'react';
 
 interface Props {
   onSignOut?: () => void;
@@ -12,10 +13,12 @@ interface Props {
 
 const SignOutButton: React.FC<Props> = ({ onSignOut }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   return (
     <IconButton
       onClick={async () => {
+        setLoading(true);
         await signOut();
 
         if (onSignOut) {
@@ -25,8 +28,13 @@ const SignOutButton: React.FC<Props> = ({ onSignOut }) => {
         router.push('/');
       }}
       color="warning"
+      disabled={loading}
     >
-      <ExitToAppIcon />
+      {loading ? (
+        <CircularProgress size="1em" color="warning" />
+      ) : (
+        <ExitToAppIcon />
+      )}
     </IconButton>
   );
 };

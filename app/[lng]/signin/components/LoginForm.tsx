@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Container, Button, Typography, Box, Alert } from '@mui/material';
+import { Alert, Box, Container, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { type SignInData, signInSchema } from '@/auth/schema';
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
@@ -74,7 +75,8 @@ const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
             label={t('formLabelPassword')}
             required
           />
-          <Button
+          <LoadingButton
+            loading={loading}
             type="submit"
             variant="contained"
             color="primary"
@@ -82,7 +84,7 @@ const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
             disabled={!isValid || loading}
           >
             {t('buttonLabelSignIn')}
-          </Button>
+          </LoadingButton>
           <Typography marginTop="2rem">
             {t('signInHintText')}&nbsp;
             <Link href="/register">{t('signInHintLinkLabel')}</Link>

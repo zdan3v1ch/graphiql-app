@@ -79,7 +79,6 @@ describe('Given TextVariablesInput component', () => {
 
     const input = screen.getByDisplayValue('key1');
 
-    console.log(input);
     fireEvent.change(input, { target: { value: ['new key'] } });
     expect(mockedFunction).toHaveBeenCalled();
   });

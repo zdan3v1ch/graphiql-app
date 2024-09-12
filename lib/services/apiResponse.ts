@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { DataApiResponse } from '@/app/model';
+import { IntrospectionQuery } from 'graphql/utilities';
 
 export const apiResponseApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
@@ -14,12 +15,11 @@ export const apiResponseApi = createApi({
         };
       },
     }),
-    getGraphqlApiSdl: builder.query<unknown, string>({
+    getGraphqlApiSdl: builder.query<{ data: IntrospectionQuery }, string>({
       query(sdlUrl: string) {
         return {
-          url: `graphql`,
+          url: `graphql?sdlUrl=${encodeURIComponent(sdlUrl)}`,
           method: 'GET',
-          body: sdlUrl,
         };
       },
     }),
