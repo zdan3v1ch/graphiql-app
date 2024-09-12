@@ -30,7 +30,14 @@ const HeaderBar: React.FC<Props> = ({ children }) => {
   return (
     <AppBar color="primary" className="" position="fixed">
       <Box sx={{ ...appBarStyle, transition: 'all 0.2s ease-out' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>{children}</Toolbar>
+        <Toolbar
+          sx={{
+            justifyContent: 'space-between',
+            gap: '2rem',
+          }}
+        >
+          {children}
+        </Toolbar>
       </Box>
     </AppBar>
   );

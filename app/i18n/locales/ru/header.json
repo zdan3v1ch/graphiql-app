@@ -1,6 +1,7 @@
 {
   "navRestfulClient": "Restful-клиент",
   "navGraphqlClient": "GraphQL-клиент",
+  "navMain": "Главная",
   "navHistory": "История",
   "signIn": "Войти",
   "signUp": "Зарегистрироваться",

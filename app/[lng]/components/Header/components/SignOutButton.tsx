@@ -28,6 +28,7 @@ const SignOutButton: React.FC<Props> = ({ onSignOut }) => {
         router.push('/');
       }}
       color="warning"
+      disabled={loading}
     >
       {loading ? (
         <CircularProgress size="1em" color="warning" />
