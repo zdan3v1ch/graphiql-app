@@ -32,6 +32,7 @@ const config: Config = {
     'next/font/(.*)': `<rootDir>/__mocks__/nextFontMock.ts`,
     // Disable server-only
     'server-only': `<rootDir>/__mocks__/empty.ts`,
+    "^vscode-languageserver-types": require.resolve("vscode-languageserver-types"),
   },
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
