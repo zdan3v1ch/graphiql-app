@@ -8,7 +8,7 @@ describe('Given validateJson component', () => {
   });
   test('When valid json string, return empty array', () => {
     const result = validateJson('{"ff" : 5}');
-    console.log(result);
+
     expect(result.length).toBe(0);
   });
   test('When no valid json string, return error', () => {
