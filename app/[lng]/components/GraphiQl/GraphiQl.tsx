@@ -1,15 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { usePathname } from 'next/navigation';
 import { Session } from 'next-auth';
 import { buildClientSchema, GraphQLSchema } from 'graphql';
-import { Typography, Box, useMediaQuery } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
 import DownloadIcon from '@mui/icons-material/Download';
-import { useTheme } from '@mui/material/styles';
 import { ToastContainer, toast } from 'react-toastify';
 
 import {
@@ -18,7 +15,8 @@ import {
 } from '@/lib/services/apiResponse';
 import { Store } from '@/lib/localStorage/localStorage';
 
-import useGetAllSearchParams from '../../hooks/useGetAllSearchParams';
+import useClientInitialParams from '../../hooks/useClientInitialParams';
+import useUpdateUrl from './hooks/useUpdateUrl';
 import EndpointUrlInput from '@/components/EndpointUrlInput/EndpointUrlInput';
 import TextVariablesInput from '@/components/TextVariablesInput/TextVariablesInput';
 import BodyInput from '@/components/BodyInput/BodyInput';
@@ -27,24 +25,20 @@ import GraphqlQueryInput from './components/GraphqlQueryInput';
 import SdlExplorer from './components/SdlExplorer';
 
 import { Namespaces } from '@/app/i18n/data/i18n.enum';
-import {
-  isValidJsonString,
-  parseGraphiQlUrl,
-  removeLocaleFromUrl,
-} from '@/app/utils';
+import { parseGraphiQlUrl, removeLocaleFromUrl } from '@/app/utils';
 import { parseGraphqlBody } from './utils';
-import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
 import { locales } from '@/app/i18n/data/i18n.constants';
 import { rtkQueryErrorSchema } from '@/app/model';
 
 export function GraphiQl({ session }: { session: Session | null }) {
-  const theme = useTheme();
-  const upSm = useMediaQuery(theme.breakpoints.up('sm'));
-  const { t, i18n } = useTranslation([Namespaces.CLIENTS, Namespaces.GRAPHQL]);
-  const pathname = usePathname();
-  const delocalizedPathname = removeLocaleFromUrl(pathname, locales);
-  const searchParamsString = useGetAllSearchParams();
-  const clientUrl = `${delocalizedPathname}?${searchParamsString}`;
+  const [getApiSdl, { data: sdl, isFetching: isSdlFetching, error: sdlError }] =
+    useLazyGetGraphqlApiSdlQuery();
+  const [getApiResponse, { data, isFetching, error }] =
+    useLazyGetGraphqlApiResponseQuery();
+  const { upSm, t, i18n, pathname, clientUrl } = useClientInitialParams([
+    Namespaces.CLIENTS,
+    Namespaces.GRAPHQL,
+  ]);
 
   const {
     endpointUrl: parsedEndpointUrl,
@@ -72,65 +66,16 @@ export function GraphiQl({ session }: { session: Session | null }) {
   );
   const [query, setQuery] = useState<string>(initialQuery);
   const [variables, setVariables] = useState<string>(initialVariables);
-
   const [schema, setSchema] = useState<GraphQLSchema | undefined>();
 
-  const [getApiSdl, { data: sdl, isFetching: isSdlFetching, error: sdlError }] =
-    useLazyGetGraphqlApiSdlQuery();
-  const [getApiResponse, { data, isFetching, error }] =
-    useLazyGetGraphqlApiResponseQuery();
-
-  useEffect(() => {
-    const localePattern = locales.join('|');
-    const regex = new RegExp(`^/(${localePattern})/(.*)`);
-
-    // check if pathname starts with locale
-    let newUrl = regex.test(pathname)
-      ? pathname.slice(0, 1 + i18n.language.length + 1) // if yes then add locale and slashes after and before it to the new url
-      : '/';
-
-    newUrl += 'GRAPHQL/';
-
-    if (endpointUrl) {
-      newUrl += `${window.btoa(endpointUrl)}`;
-    }
-
-    if (query || variables) {
-      const body: { query?: string; variables?: unknown } = {};
-
-      if (query) {
-        body.query = query;
-      }
-
-      if (variables) {
-        if (isValidJsonString(variables)) {
-          body.variables = JSON.parse(variables);
-        } else {
-          body.variables = {};
-        }
-      }
-
-      if (!endpointUrl) {
-        newUrl += EMPTY_ENDPOINT_URL_SYMBOL;
-      }
-
-      newUrl += `/${window.btoa(encodeURI(JSON.stringify(body)))}`;
-    }
-
-    if (headers.length) {
-      newUrl += '?';
-
-      headers.forEach(([key, value], index) => {
-        if (index > 0) {
-          newUrl += '&';
-        }
-
-        newUrl += `${key}=${encodeURIComponent(value)}`;
-      });
-    }
-
-    history.pushState(null, '', newUrl);
-  }, [endpointUrl, headers, pathname, i18n.language.length, query, variables]);
+  useUpdateUrl(
+    endpointUrl,
+    headers,
+    pathname,
+    i18n.language.length,
+    query,
+    variables
+  );
 
   useEffect(() => {
     if (sdl) {
