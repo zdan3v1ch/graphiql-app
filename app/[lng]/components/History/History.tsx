@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Session } from 'next-auth';
 import { useTranslation } from 'react-i18next';
+import { Box, Stack, Typography } from '@mui/material';
 
-import { Namespaces } from '@/app/i18n/data/i18n.enum';
 import { Store } from '@/lib/localStorage/localStorage';
+import { Namespaces } from '@/app/i18n/data/i18n.enum';
+
 import { protectedNavButtonParams } from '@/app/[lng]/components/Header/constants';
 import NavButton from '@/components/NavButton';
-import { Session } from 'next-auth';
 
 export default function History({ session }: { session: Session | null }) {
   const { t } = useTranslation(Namespaces.HISTORY);
@@ -72,6 +73,10 @@ export default function History({ session }: { session: Session | null }) {
               buttonProps={{
                 variant: 'text',
                 color: 'primary',
+                sx: {
+                  textAlign: 'left',
+                  wordBreak: 'break-word',
+                },
               }}
             />
           );
