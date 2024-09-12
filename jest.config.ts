@@ -17,6 +17,8 @@ const config: Config = {
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: false,
   moduleNameMapper: {
+    "^vscode-languageserver-types": require.resolve("vscode-languageserver-types"),
+    "^next-auth": require.resolve("next-auth"),
     '^@/(.*)$': '<rootDir>/$1',
     // Handle CSS imports (with CSS modules)
     // https://jestjs.io/docs/webpack#mocking-css-modules

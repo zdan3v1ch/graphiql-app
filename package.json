@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
-    "test": "jest --runInBand",
+    "test": "jest",
     "test:watch": "jest --watch",
     "coverage": "jest --coverage",
     "prepare": "husky"
