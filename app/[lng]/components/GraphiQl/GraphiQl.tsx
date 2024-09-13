@@ -122,9 +122,11 @@ export function GraphiQl({ session }: { session: Session | null }) {
           const delocalizedUrl = removeLocaleFromUrl(url, locales);
 
           Store.addRequest(delocalizedUrl, session?.user?.email);
-          await getApiResponse(JSON.stringify(delocalizedUrl.slice(1))).catch(
-            () => console.error('Failed to fetch data')
-          );
+          try {
+            await getApiResponse(JSON.stringify(delocalizedUrl.slice(1)));
+          } catch (error) {
+            console.error('Failed to fetch data');
+          }
         }}
       >
         <Typography>{t('queryPrompt')}</Typography>
@@ -175,9 +177,11 @@ export function GraphiQl({ session }: { session: Session | null }) {
             loadingPosition="end"
             sx={{ flexShrink: 0 }}
             onClick={async () => {
-              await getApiSdl(sdlUrl).catch(() =>
-                console.error('Failed to fetch data')
-              );
+              try {
+                await getApiSdl(sdlUrl);
+              } catch (error) {
+                console.error('Failed to fetch data');
+              }
             }}
           >
             {t('load')}
@@ -214,6 +218,7 @@ export function GraphiQl({ session }: { session: Session | null }) {
         hideProgressBar={true}
         position="top-center"
         theme="colored"
+        data-testid="toast-container"
       />
     </div>
   );
