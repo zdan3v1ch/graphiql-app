@@ -60,6 +60,7 @@ const config: Config = {
     'layout\\.tsx$',
     'loading\\.tsx$',
     'theme\\.ts$',
+    './app/api/auth',
   ],
 };
 
