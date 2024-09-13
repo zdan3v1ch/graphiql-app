@@ -55,6 +55,8 @@ const config: Config = {
     'model\\.ts$',
     'schema\\.ts$',
     'config\\.ts$',
+    'layout\\.tsx$',
+    'loading\\.tsx$',
   ],
 };
 
