@@ -19,6 +19,7 @@ const config: Config = {
   moduleNameMapper: {
     '^next-auth': require.resolve('next-auth'),
     '^@/(.*)$': '<rootDir>/$1',
+    '^@auth/(.*)$': '<rootDir>/node_modules/@auth/$1',
     // Handle CSS imports (with CSS modules)
     // https://jestjs.io/docs/webpack#mocking-css-modules
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
@@ -53,10 +54,12 @@ const config: Config = {
     'types\\.ts$',
     'constants\\.ts$',
     'model\\.ts$',
+    'interface\\.ts$',
     'schema\\.ts$',
     'config\\.ts$',
     'layout\\.tsx$',
     'loading\\.tsx$',
+    'theme\\.ts$',
   ],
 };
 
