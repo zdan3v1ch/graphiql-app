@@ -5,6 +5,10 @@ jest.mock('react-i18next', () => {
   const originalModule = jest.requireActual('react-i18next');
   return {
     ...originalModule,
-    useTranslation: () => ({ t: (key: string) => key }),
+    useTranslation: () => ({ t: (key: string) => key,
+      i18n: {
+      language: 'en'
+    }
+     }),
   };
 });
