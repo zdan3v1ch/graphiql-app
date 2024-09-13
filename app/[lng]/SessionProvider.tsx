@@ -11,27 +11,29 @@ interface Props {
 
 const SessionProvider: React.FC<Props> = ({ session, children }) => {
   useEffect(() => {
-    const expirationTimestamp = new Date(session?.expires ?? 0).getTime();
-    const currentTime = Date.now();
+    if (session) {
+      const expirationTimestamp = new Date(session?.expires ?? 0).getTime();
+      const currentTime = Date.now();
 
-    const timeLeft = expirationTimestamp - currentTime;
+      const timeLeft = expirationTimestamp - currentTime;
 
-    if (timeLeft <= 0) {
-      const timer = setTimeout(() => {
-        void (async () => {
-          await signOut().catch();
-        })();
-      }, 0);
+      if (timeLeft <= 0) {
+        const timer = setTimeout(() => {
+          void (async () => {
+            await signOut().catch();
+          })();
+        }, 0);
 
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        void (async () => {
-          await signOut().catch();
-        })();
-      }, timeLeft + 1000);
+        return () => clearTimeout(timer);
+      } else {
+        const timer = setTimeout(() => {
+          void (async () => {
+            await signOut().catch();
+          })();
+        }, timeLeft);
 
-      return () => clearTimeout(timer);
+        return () => clearTimeout(timer);
+      }
     }
   }, [session]);
 
