@@ -51,16 +51,19 @@ const config: Config = {
   coverageProvider: 'v8',
   collectCoverageFrom: ['app/**', 'auth/**', 'components/**', 'lib/**'],
   coveragePathIgnorePatterns: [
+    '/lib/store.ts',
+    '/lib/hooks.ts',
     'types\\.ts$',
     'constants\\.ts$',
     'model\\.ts$',
     'interface\\.ts$',
     'schema\\.ts$',
     'config\\.ts$',
-    'layout\\.tsx$',
-    'loading\\.tsx$',
     'theme\\.ts$',
-    './app/api/auth',
+    'loading\\.tsx$',
+    'layout\\.tsx$',
+    './app/\\[lng\\]/requests-history/page.tsx',
+    '/app/api/auth/\\[\\.\\.\\.nextauth\\]/route.ts',
   ],
 };
 

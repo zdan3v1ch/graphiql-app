@@ -25,6 +25,7 @@ const SdlExplorer: React.FC<Props> = ({ schema }) => {
           borderRadius: '0.25rem',
           overflow: 'hidden',
         }}
+        data-testid="sdl-explorer"
       >
         <CodeMirror
           readOnly

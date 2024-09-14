@@ -56,9 +56,10 @@ const LoginForm: React.FC<Props> = ({ error, onSubmit }) => {
           </Alert>
         )}
         <form
-          action={async () => await onSubmit(getValues())}
-          onSubmit={() => {
+          onSubmit={async (event) => {
+            event.preventDefault();
             setLoading(true);
+            await onSubmit(getValues());
           }}
         >
           <FormInputText
