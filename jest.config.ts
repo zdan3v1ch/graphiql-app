@@ -17,6 +17,9 @@ const config: Config = {
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: false,
   moduleNameMapper: {
+    '^next-auth': require.resolve('next-auth'),
+    '^@/(.*)$': '<rootDir>/$1',
+    '^@auth/(.*)$': '<rootDir>/node_modules/@auth/$1',
     // Handle CSS imports (with CSS modules)
     // https://jestjs.io/docs/webpack#mocking-css-modules
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
@@ -31,6 +34,9 @@ const config: Config = {
     'next/font/(.*)': `<rootDir>/__mocks__/nextFontMock.ts`,
     // Disable server-only
     'server-only': `<rootDir>/__mocks__/empty.ts`,
+    '^vscode-languageserver-types': require.resolve(
+      'vscode-languageserver-types'
+    ),
   },
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
@@ -43,8 +49,22 @@ const config: Config = {
   },
   resetMocks: false,
   coverageProvider: 'v8',
-  collectCoverageFrom: ['app/**'],
-  coveragePathIgnorePatterns: ['types\\.ts$'],
+  collectCoverageFrom: ['app/**', 'auth/**', 'components/**', 'lib/**'],
+  coveragePathIgnorePatterns: [
+    '/lib/store.ts',
+    '/lib/hooks.ts',
+    'types\\.ts$',
+    'constants\\.ts$',
+    'model\\.ts$',
+    'interface\\.ts$',
+    'schema\\.ts$',
+    'config\\.ts$',
+    'theme\\.ts$',
+    'loading\\.tsx$',
+    'layout\\.tsx$',
+    './app/\\[lng\\]/requests-history/page.tsx',
+    '/app/api/auth/\\[\\.\\.\\.nextauth\\]/route.ts',
+  ],
 };
 
 export default createJestConfig(config);

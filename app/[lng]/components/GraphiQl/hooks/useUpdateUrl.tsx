@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { HTTP_METHOD } from 'next/dist/server/web/http';
 
 import { locales } from '@/app/i18n/data/i18n.constants';
 import { EMPTY_ENDPOINT_URL_SYMBOL } from '@/app/constants';
