@@ -1,0 +1,12 @@
+{
+  "navRestfulClient": "Restful Client",
+  "navGraphqlClient": "GraphQL Client",
+  "navMain": "Main",
+  "navHistory": "History",
+  "signIn": "Sign In",
+  "signUp": "Sign up",
+  "signOut": "Sign Out",
+  "toggle": "Switch language",
+  "en": "English",
+  "ru": "Russian"
+}

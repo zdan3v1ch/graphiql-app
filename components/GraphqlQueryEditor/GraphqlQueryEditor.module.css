@@ -1,0 +1,21 @@
+.editorContainer {
+  box-sizing: content-box;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.editorContainer:hover {
+  border-color: rgba(0, 0, 0, 1);
+}
+
+.editorContainer:focus,
+.editorContainer:focus-within {
+  border: 2px solid #673ab7;
+}
+
+.editorContainer:focus > .editor,
+.editorContainer:focus-within > .editor {
+  margin: -1px;
+  overflow-y: auto;
+}

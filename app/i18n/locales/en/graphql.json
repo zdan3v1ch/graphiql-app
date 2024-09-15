@@ -1,0 +1,20 @@
+{
+  "titleGraphql": "GraphiQL Client",
+  "addHeaderGraphql": "Add headers",
+  "responseGraphql": "Response",
+  "documentationGraphql": "Documentation",
+  "endpointUrlGraphql": "Endpoint URL",
+  "sdlUrlGraphql": "SDL schema URL",
+  "sdlExplorerTitle": "SDL documentation explorer",
+  "sdlExplorerPrompt": "Load an SDL schema to see the documentation",
+  "headersGraphql": "Headers",
+  "addHeadersGraphql": "Add headers",
+  "headerKeyGraphql": "Header Key",
+  "headerValueGraphql": "Header Value",
+  "queryGraphql": "Query string",
+  "variablesGraphql": "GraphQL variables",
+  "variablesGraphqlPrompt": "Write the GraphQL variable following the JSON syntax",
+  "statusGraphql": "Status",
+  "bodyGraphql": "Body",
+  "sendRequestGraphql": "Send request"
+}

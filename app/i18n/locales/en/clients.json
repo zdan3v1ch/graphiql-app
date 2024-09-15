@@ -1,0 +1,20 @@
+{
+  "restClient": "RESTfull Client",
+  "endpointUrlLabel": "Endpoint URL",
+  "graphiQl": "GraphiQL",
+  "headers": "Headers",
+  "headersAdd": "Add header",
+  "variables": "Variables",
+  "variablesAdd": "Add variable",
+  "body": "Body JSON",
+  "bodyPrompt": "Write the request body following the JSON syntax",
+  "send": "Send",
+  "load": "Load",
+  "requestPrompt": "Set up your request to a RESTful API",
+  "queryPrompt": "Set up your request to a GraphQL API",
+  "response": "API Response",
+  "responseError": "Failed to fetch data",
+  "status": "Status",
+  "responseBody": "Body",
+  "emptyResponse": "Send your first request to see the response"
+}

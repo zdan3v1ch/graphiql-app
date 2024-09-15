@@ -1,0 +1,13 @@
+{
+  "title": "Welcome!",
+  "authTitle": "Welcome back,",
+  "devs": "Developers",
+  "devRole": "Frontend developer",
+  "devArtem": "Experienced in JS, React and Material UI. Passionate about building beautiful interfaces.",
+  "devAnatoli": "Specialized in React, Javascript and building beautiful interfaces.",
+  "devViktoria": "Enjoys working on frontend technologies like React, Node.js, and GraphQL.",
+  "project": "Project",
+  "projectDesc": "This is a light-weight versions of Postman and GraphiQL combined in one app.",
+  "course": "Course",
+  "courseDesc": "This React training course provides hands-on experience in building modern web applications using React, covering components, state management, hooks, and more."
+}
